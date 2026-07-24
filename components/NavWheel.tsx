@@ -54,7 +54,7 @@ export default function NavWheel() {
   };
 
   return (
-    <div data-lenis-prevent="true" className="fixed right-0 top-1/2 -translate-y-1/2 h-[800px] w-[300px] z-[200] pointer-events-auto opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-700 ease-in-out origin-right backdrop-blur-3xl bg-black/0 hover:bg-black/60 [mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] [-webkit-mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)]">
+    <div data-lenis-prevent="true" className="fixed right-0 top-1/2 -translate-y-1/2 h-[800px] w-[300px] z-[200] pointer-events-auto hover:scale-110 transition-all duration-700 ease-in-out origin-right [mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] [-webkit-mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)]">
       <OptionWheel
         items={sections.map(s => s.label)}
         defaultSelected={activeIndex}

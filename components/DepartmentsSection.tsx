@@ -71,29 +71,35 @@ export default function DepartmentsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.7, delay: index * 0.1 }}
-              className="relative group overflow-hidden border border-white/10 bg-white/[0.02] backdrop-blur-md min-h-[350px] flex flex-col justify-end p-8 cursor-crosshair"
             >
-              {/* Background Hover Image */}
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-40 transition-opacity duration-700 z-0 scale-105 group-hover:scale-100"
-                style={{ backgroundImage: `url(${dept.image})` }}
-              />
-              {/* Gradient Overlay for Text Readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0" />
+              <div 
+                className="relative h-96 w-full rounded-none overflow-hidden group cursor-pointer border border-white/10 hover:border-white/30 transition-all duration-700 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+              >
+                {/* Background Image */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-40 transition-opacity duration-700 ease-[0.16,1,0.3,1] z-0 scale-105 group-hover:scale-100"
+                  style={{ backgroundImage: `url(${dept.image})` }}
+                />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-700 ease-[0.16,1,0.3,1] z-0" />
+                
+                {/* Icon */}
+                <div className="absolute top-8 right-8 z-10 opacity-50 group-hover:opacity-100 transition-all duration-700 ease-[0.16,1,0.3,1] transform group-hover:scale-110">
+                  {dept.icon}
+                </div>
 
-              {/* Icon Top Right */}
-              <div className="absolute top-8 right-8 z-10 opacity-50 group-hover:opacity-100 transition-opacity duration-500 transform group-hover:scale-110">
-                {dept.icon}
-              </div>
-
-              {/* Content */}
-              <div className="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <h4 className="text-3xl font-bold text-white mb-4 tracking-tight">
-                  {dept.title}
-                </h4>
-                <p className="text-white/60 leading-relaxed group-hover:text-white/80 transition-colors duration-500 max-w-md">
-                  {dept.description}
-                </p>
+                {/* Content */}
+                <div className="absolute bottom-0 left-0 p-8 w-full z-10 flex flex-col justify-end">
+                  <div className="relative z-10 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1]">
+                    <h4 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-white transition-colors duration-700">
+                      {dept.title}
+                    </h4>
+                    <p className="text-white/50 leading-relaxed group-hover:text-white/80 transition-colors duration-700 max-w-md">
+                      {dept.description}
+                    </p>
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}

@@ -78,7 +78,7 @@ export default function JoinUsSection() {
                     <input 
                       type="text" 
                       placeholder="John" 
-                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors placeholder:text-white/20"
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-transparent focus:ring-1 focus:ring-white/50 transition-all duration-300 placeholder:text-white/20"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -86,7 +86,7 @@ export default function JoinUsSection() {
                     <input 
                       type="text" 
                       placeholder="Doe" 
-                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors placeholder:text-white/20"
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-transparent focus:ring-1 focus:ring-white/50 transition-all duration-300 placeholder:text-white/20"
                     />
                   </div>
                 </div>
@@ -96,13 +96,13 @@ export default function JoinUsSection() {
                   <input 
                     type="email" 
                     placeholder="john@university.edu" 
-                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors placeholder:text-white/20"
+                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-transparent focus:ring-1 focus:ring-white/50 transition-all duration-300 placeholder:text-white/20"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-white/50">Department of Interest</label>
-                  <select defaultValue="" className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors appearance-none rounded-none">
+                  <select defaultValue="" className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-transparent focus:ring-1 focus:ring-white/50 transition-all duration-300 appearance-none rounded-none">
                     <option value="" disabled className="text-black">Select a department</option>
                     <option value="projects" className="text-black">Projects (Engineering)</option>
                     <option value="design" className="text-black">Design & Content</option>
@@ -116,15 +116,12 @@ export default function JoinUsSection() {
                   <textarea 
                     rows={4}
                     placeholder="Tell us about your passion for space..." 
-                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/30 transition-colors placeholder:text-white/20 resize-none"
+                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-white/50 focus:ring-1 focus:ring-white/20 transition-all duration-300 placeholder:text-white/20 resize-none"
                   />
                 </div>
 
-                <button 
-                  type="submit" 
-                  className="mt-4 flex items-center justify-center gap-3 w-full bg-white text-black px-8 py-4 font-bold uppercase tracking-widest hover:bg-white/90 transition-colors"
-                >
-                  Submit Application <Send className="w-4 h-4" />
+                <button type="submit" className="group mt-4 flex items-center justify-center gap-3 w-full bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]">
+                  Submit Application <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </form>
             </div>

@@ -72,20 +72,38 @@ export default function EventsSection() {
             Missions & Gatherings
           </motion.h2>
           
-          <div className="flex items-center gap-6 mt-6">
-            <button 
-              onClick={() => setActiveTab("upcoming")}
-              className={`text-2xl md:text-5xl font-bold tracking-tight transition-colors duration-300 ${activeTab === "upcoming" ? "text-white" : "text-white/20 hover:text-white/50"}`}
-            >
-              Upcoming
-            </button>
-            <span className="text-white/20 text-3xl font-light">/</span>
-            <button 
-              onClick={() => setActiveTab("past")}
-              className={`text-2xl md:text-5xl font-bold tracking-tight transition-colors duration-300 ${activeTab === "past" ? "text-white" : "text-white/20 hover:text-white/50"}`}
-            >
-              Past
-            </button>
+          <div className="flex items-center gap-2 bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-md">
+            <div className="relative flex items-center">
+              <button
+                onClick={() => setActiveTab("upcoming")}
+                className={`relative z-10 px-6 md:px-10 py-3 md:py-4 text-sm md:text-base font-bold tracking-widest uppercase transition-colors duration-500 rounded-full ${activeTab === "upcoming" ? "text-black" : "text-white/50 hover:text-white"}`}
+              >
+                Upcoming
+              </button>
+              {activeTab === "upcoming" && (
+                <motion.div 
+                  layoutId="activeTabIndicator"
+                  className="absolute inset-0 bg-white rounded-full z-0"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+            </div>
+            
+            <div className="relative flex items-center">
+              <button
+                onClick={() => setActiveTab("past")}
+                className={`relative z-10 px-6 md:px-10 py-3 md:py-4 text-sm md:text-base font-bold tracking-widest uppercase transition-colors duration-500 rounded-full ${activeTab === "past" ? "text-black" : "text-white/50 hover:text-white"}`}
+              >
+                Past Archive
+              </button>
+              {activeTab === "past" && (
+                <motion.div 
+                  layoutId="activeTabIndicator"
+                  className="absolute inset-0 bg-white rounded-full z-0"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -179,7 +197,7 @@ export default function EventsSection() {
             >
               <div 
                 ref={containerRef}
-                className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pr-6 md:pr-12"
+                className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pr-6 md:pr-12 scroll-smooth"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {pastEvents.map((event, index) => (
@@ -189,10 +207,10 @@ export default function EventsSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="min-w-[320px] md:min-w-[450px] w-[85vw] md:w-[450px] snap-center flex flex-col group cursor-pointer relative overflow-hidden"
+                    className="min-w-[320px] md:min-w-[450px] w-[85vw] md:w-[450px] snap-center flex flex-col group cursor-pointer relative overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-700 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)]"
                   >
-                    {/* Flat Glass Container */}
-                    <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-xl border border-white/10 group-hover:bg-white/[0.05] transition-colors duration-500 z-0" />
+                    {/* Background layers */}
+                    <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-xl group-hover:bg-white/[0.05] transition-colors duration-500 z-0" />
                     
                     {/* Image Header */}
                     <div className="relative w-full aspect-[21/9] overflow-hidden z-10 border-b border-white/10">
