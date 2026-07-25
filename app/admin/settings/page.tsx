@@ -8,6 +8,7 @@ export default function SettingsPage() {
   const [config, setConfig] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState<{type: 'success' | 'error', message: string} | null>(null);
 
   useEffect(() => {
     getFormConfig().then(data => {
@@ -50,9 +51,16 @@ export default function SettingsPage() {
 
   const handleSave = async () => {
     setSaving(true);
-    await updateFormConfig(config);
+    setStatus(null);
+    const result = await updateFormConfig(config);
     setSaving(false);
-    alert("Saved successfully!");
+    
+    if (result?.success) {
+      setStatus({ type: 'success', message: "Settings saved successfully!" });
+      setTimeout(() => setStatus(null), 3000);
+    } else {
+      setStatus({ type: 'error', message: "Failed to save settings." });
+    }
   };
 
   if (loading) return <div className="text-white/50">Loading configuration...</div>;
@@ -65,14 +73,21 @@ export default function SettingsPage() {
           <h1 className="text-3xl font-bold text-white mb-2">Form Configuration</h1>
           <p className="text-white/50 text-sm">Configure how the "Join Us" application form works and add custom fields.</p>
         </div>
-        <button 
-          onClick={handleSave}
-          disabled={saving}
-          className="flex items-center gap-2 bg-white text-black px-6 py-3 font-bold uppercase tracking-widest text-xs rounded hover:bg-gray-200 transition-colors disabled:opacity-50"
-        >
-          <Save className="w-4 h-4" />
-          {saving ? "Saving..." : "Save Changes"}
-        </button>
+        <div className="flex items-center gap-4">
+          {status && (
+            <span className={`text-sm font-bold uppercase tracking-widest ${status.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+              {status.message}
+            </span>
+          )}
+          <button 
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-2 bg-white text-black px-6 py-3 font-bold uppercase tracking-widest text-xs rounded hover:bg-gray-200 transition-colors disabled:opacity-50"
+          >
+            <Save className="w-4 h-4" />
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">

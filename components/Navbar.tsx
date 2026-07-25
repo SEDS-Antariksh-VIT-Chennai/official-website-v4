@@ -40,9 +40,11 @@ export default function Navbar() {
           : "border-transparent py-6"
       )}
     >
-      <div className="absolute inset-0 z-[-1] pointer-events-none">
-        <GradualBlur preset="header" />
-      </div>
+      {!pathname.startsWith("/admin") && (
+        <div className="absolute inset-0 z-[-1] pointer-events-none">
+          <GradualBlur preset="header" />
+        </div>
+      )}
 
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold tracking-tighter uppercase z-50 text-white flex items-center gap-1 group">

@@ -8,8 +8,13 @@ import NavWheel from "@/components/NavWheel";
 import Lightfall from "@/src/component/Lightfall";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import prisma from "@/lib/prisma";
 
-export default function Home() {
+export default async function Home() {
+  const events = await prisma.event.findMany({
+    orderBy: { date: 'desc' }
+  });
+
   return (
     <main id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
       <NavWheel />
@@ -34,7 +39,7 @@ export default function Home() {
 
       <AboutSection />
       <ProjectsSection showViewAll={true} />
-      <EventsSection />
+      <EventsSection events={events} />
       <DepartmentsSection />
       
       {/* Join Us CTA */}

@@ -1,0 +1,83 @@
+"use client";
+
+import { Trash2, AlertTriangle, X } from "lucide-react";
+import { useTransition, useState, useEffect } from "react";
+import { deleteEvent } from "@/src/actions/admin";
+import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
+
+export default function DeleteButton({ id }: { id: string }) {
+  const [isPending, startTransition] = useTransition();
+  const [showModal, setShowModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const confirmDelete = () => {
+    startTransition(() => {
+      deleteEvent(id);
+      setShowModal(false);
+    });
+  };
+
+  return (
+    <>
+      <button 
+        onClick={() => setShowModal(true)}
+        disabled={isPending}
+        className="p-2 hover:bg-red-500/10 rounded transition-colors text-white/50 hover:text-red-400 disabled:opacity-50" 
+        title="Delete"
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
+
+      {mounted && createPortal(
+        <AnimatePresence>
+          {showModal && (
+            <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-card border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-[0_0_40px_rgba(0,0,0,0.5)] relative overflow-hidden"
+              >
+                {/* Background accent */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500/0 via-red-500 to-red-500/0 opacity-50" />
+                
+                <div className="flex gap-4 items-start mb-6">
+                  <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0 border border-red-500/20">
+                    <AlertTriangle className="w-5 h-5 text-red-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">Delete Event?</h3>
+                    <p className="text-white/60 text-sm leading-relaxed text-left">
+                      Are you sure you want to delete this event? This action cannot be undone and it will be permanently removed from the database.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-2">
+                  <button 
+                    onClick={() => setShowModal(false)}
+                    className="px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-muted hover:text-foreground bg-white/5 hover:bg-white/10 rounded transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    onClick={confirmDelete}
+                    className="px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-foreground bg-red-600 hover:bg-red-500 rounded transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
+  );
+}

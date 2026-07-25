@@ -2,16 +2,27 @@ import { Users, Calendar, LayoutTemplate } from "lucide-react";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
 export default async function AdminDashboard() {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  // Mock data for dashboard stats
+  // Fetch real stats from DB
+  const pendingCount = await prisma.application.count({ where: { status: 'PENDING' } });
+  const eventsCount = await prisma.event.count();
+  const formConfig = await prisma.formConfig.findUnique({ where: { id: 'default' } });
+  const customFieldsCount = formConfig?.customFields ? (formConfig.customFields as any[]).length : 0;
+  
+  const recentApps = await prisma.application.findMany({
+    take: 3,
+    orderBy: { createdAt: 'desc' }
+  });
+
   const stats = [
-    { label: "Pending Applications", value: "24", icon: Users, href: "/admin/applications", color: "text-blue-400" },
-    { label: "Upcoming Events", value: "3", icon: Calendar, href: "/admin/events", color: "text-green-400" },
-    { label: "Active Form Fields", value: "5", icon: LayoutTemplate, href: "/admin/settings", color: "text-purple-400" },
+    { label: "Pending Applications", value: pendingCount.toString(), icon: Users, href: "/admin/applications", color: "text-blue-400" },
+    { label: "Total Events", value: eventsCount.toString(), icon: Calendar, href: "/admin/events", color: "text-green-400" },
+    { label: "Custom Fields", value: customFieldsCount.toString(), icon: LayoutTemplate, href: "/admin/settings", color: "text-purple-400" },
   ];
 
   return (
@@ -37,16 +48,24 @@ export default async function AdminDashboard() {
         <div className="bg-white/5 border border-white/10 rounded-xl p-6">
           <h2 className="text-sm font-bold uppercase tracking-widest text-white mb-6">Recent Applications</h2>
           <div className="flex flex-col gap-4">
-            {/* Mock recent applications */}
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-0 last:pb-0">
+            {recentApps.map((app) => (
+              <div key={app.id} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-0 last:pb-0">
                 <div>
-                  <p className="font-bold text-white text-sm">Applicant {i + 1}</p>
-                  <p className="text-xs text-white/50">Space Robotics Division</p>
+                  <p className="font-bold text-white text-sm">{app.name}</p>
+                  <p className="text-xs text-white/50">{app.department}</p>
                 </div>
-                <span className="text-[10px] uppercase tracking-widest bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded">Pending</span>
+                <span className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded ${
+                    app.status === 'ACCEPTED' ? 'bg-green-500/20 text-green-400' :
+                    app.status === 'REJECTED' ? 'bg-red-500/20 text-red-400' :
+                    'bg-yellow-500/20 text-yellow-500'
+                  }`}>
+                  {app.status}
+                </span>
               </div>
             ))}
+            {recentApps.length === 0 && (
+              <p className="text-white/30 text-sm py-4">No recent applications.</p>
+            )}
           </div>
         </div>
 
@@ -55,15 +74,17 @@ export default async function AdminDashboard() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Database Connection</span>
-              <span className="text-xs uppercase tracking-widest text-red-400">Offline (Mock Mode)</span>
+              <span className="text-xs uppercase tracking-widest text-green-400">Online</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Google OAuth Setup</span>
-              <span className="text-xs uppercase tracking-widest text-yellow-400">Pending Keys</span>
+              <span className="text-xs uppercase tracking-widest text-green-400">Active</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Form Status</span>
-              <span className="text-xs uppercase tracking-widest text-green-400">Accepting</span>
+              <span className={`text-xs uppercase tracking-widest ${formConfig?.isOpen ? 'text-green-400' : 'text-red-400'}`}>
+                {formConfig?.isOpen ? 'Accepting' : 'Closed'}
+              </span>
             </div>
           </div>
         </div>

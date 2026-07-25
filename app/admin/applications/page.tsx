@@ -1,17 +1,13 @@
 import { ExternalLink, CheckCircle, XCircle, Search } from "lucide-react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { getApplications, updateApplicationStatus } from "@/src/actions/admin";
 
 export default async function ApplicationsPage() {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  // Mock data for applications
-  const applications = [
-    { id: 1, name: "Alice Johnson", email: "alice@example.com", department: "Space Robotics", status: "PENDING", date: "2026-07-25" },
-    { id: 2, name: "Bob Smith", email: "bob@example.com", department: "Aerospace", status: "ACCEPTED", date: "2026-07-24" },
-    { id: 3, name: "Charlie Davis", email: "charlie@example.com", department: "Software", status: "REJECTED", date: "2026-07-23" },
-  ];
+  const applications = await getApplications();
 
   return (
     <div>
@@ -57,7 +53,7 @@ export default async function ApplicationsPage() {
                   <p className="text-white/50 text-xs">{app.email}</p>
                 </td>
                 <td className="px-6 py-4 text-white/70">{app.department}</td>
-                <td className="px-6 py-4 text-white/50 text-xs">{app.date}</td>
+                <td className="px-6 py-4 text-white/50 text-xs">{app.createdAt.toLocaleDateString()}</td>
                 <td className="px-6 py-4">
                   <span className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded ${
                     app.status === 'ACCEPTED' ? 'bg-green-500/20 text-green-400' :
@@ -69,15 +65,22 @@ export default async function ApplicationsPage() {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <button className="p-2 hover:bg-white/10 rounded transition-colors text-white/50 hover:text-green-400" title="Accept">
-                      <CheckCircle className="w-4 h-4" />
-                    </button>
-                    <button className="p-2 hover:bg-white/10 rounded transition-colors text-white/50 hover:text-red-400" title="Reject">
-                      <XCircle className="w-4 h-4" />
-                    </button>
-                    <button className="p-2 hover:bg-white/10 rounded transition-colors text-white/50 hover:text-white" title="View Full Details">
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
+                    <form action={async () => {
+                      "use server";
+                      await updateApplicationStatus(app.id, 'ACCEPTED');
+                    }}>
+                      <button type="submit" className="p-2 hover:bg-white/10 rounded transition-colors text-white/50 hover:text-green-400" title="Accept">
+                        <CheckCircle className="w-4 h-4" />
+                      </button>
+                    </form>
+                    <form action={async () => {
+                      "use server";
+                      await updateApplicationStatus(app.id, 'REJECTED');
+                    }}>
+                      <button type="submit" className="p-2 hover:bg-white/10 rounded transition-colors text-white/50 hover:text-red-400" title="Reject">
+                        <XCircle className="w-4 h-4" />
+                      </button>
+                    </form>
                   </div>
                 </td>
               </tr>
