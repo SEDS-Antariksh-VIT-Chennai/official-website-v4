@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Send } from "lucide-react";
 
-export default function JoinUsSection() {
+export default function JoinUsSection({ config }: { config?: any }) {
+  const customFields = config?.customFields || [];
+  const isOpen = config ? config.isOpen : true;
+  const requireResume = config ? config.requireResume : true;
+  const requirePortfolio = config ? config.requirePortfolio : false;
   return (
     <section id="join" className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden">
       {/* Background ambient glow */}
@@ -111,6 +115,31 @@ export default function JoinUsSection() {
                   </select>
                 </div>
 
+                {/* Dynamic Config Fields */}
+                {requireResume && (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/50">Resume URL *</label>
+                    <input 
+                      type="url" 
+                      required
+                      placeholder="Link to Google Drive or Dropbox" 
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-transparent focus:ring-1 focus:ring-white/50 transition-all duration-300 placeholder:text-white/20"
+                    />
+                  </div>
+                )}
+
+                {requirePortfolio && (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/50">Portfolio URL *</label>
+                    <input 
+                      type="url" 
+                      required
+                      placeholder="Link to your projects" 
+                      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-transparent focus:ring-1 focus:ring-white/50 transition-all duration-300 placeholder:text-white/20"
+                    />
+                  </div>
+                )}
+
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-bold uppercase tracking-widest text-white/50">Why do you want to join?</label>
                   <textarea 
@@ -120,9 +149,37 @@ export default function JoinUsSection() {
                   />
                 </div>
 
-                <button type="submit" className="group mt-4 flex items-center justify-center gap-3 w-full bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]">
-                  Submit Application <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+                {/* Custom User Fields */}
+                {customFields.map((field: any) => (
+                  <div key={field.id} className="flex flex-col gap-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-white/50">
+                      {field.label} {field.required && "*"}
+                    </label>
+                    {field.type === 'textarea' ? (
+                      <textarea 
+                        required={field.required}
+                        rows={3}
+                        className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-white/50 transition-all duration-300"
+                      />
+                    ) : (
+                      <input 
+                        type={field.type === 'url' ? 'url' : 'text'}
+                        required={field.required}
+                        className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 focus:outline-none focus:bg-white/10 focus:border-transparent transition-all duration-300"
+                      />
+                    )}
+                  </div>
+                ))}
+
+                {!isOpen ? (
+                  <div className="mt-4 bg-red-500/10 border border-red-500/20 text-red-400 p-6 text-center rounded">
+                    Recruitment is currently closed. Check back later!
+                  </div>
+                ) : (
+                  <button type="submit" className="group mt-4 flex items-center justify-center gap-3 w-full bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]">
+                    Submit Application <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                )}
               </form>
             </div>
           </motion.div>

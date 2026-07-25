@@ -101,10 +101,11 @@ model Application {
   department  String
   year        String
   portfolio   String?
-  resumeUrl   String
-  reason      String   @db.Text
+  resumeUrl   String?
+  reason      String?  @db.Text
   linkedin    String?
   github      String?
+  customAnswers Json?  // Stores answers to custom fields defined in FormConfig
   status      AppStatus @default(PENDING)
   createdAt   DateTime @default(now())
 }
@@ -114,4 +115,13 @@ enum AppStatus {
   REVIEWED
   ACCEPTED
   REJECTED
+}
+
+model FormConfig {
+  id               String   @id @default("default")
+  isOpen           Boolean  @default(true)
+  requireResume    Boolean  @default(true)
+  requirePortfolio Boolean  @default(false)
+  customFields     Json?    // Stores an array of { id, type, label, required } for dynamic fields
+  updatedAt        DateTime @updatedAt
 }

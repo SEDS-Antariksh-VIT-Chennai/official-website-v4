@@ -1,10 +1,13 @@
 import LandingContent from "@/components/LandingContent";
 import AboutSection from "@/components/AboutSection";
+import ProjectsSection from "@/components/ProjectsSection";
 import EventsSection from "@/components/EventsSection";
 import DepartmentsSection from "@/components/DepartmentsSection";
-import JoinUsSection from "@/components/JoinUsSection";
+import ContactUsSection from "@/components/ContactUsSection";
 import NavWheel from "@/components/NavWheel";
 import Lightfall from "@/src/component/Lightfall";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
@@ -30,9 +33,25 @@ export default function Home() {
       </div>
 
       <AboutSection />
+      <ProjectsSection showViewAll={true} />
       <EventsSection />
       <DepartmentsSection />
-      <JoinUsSection />
+      
+      {/* Join Us CTA */}
+      <section className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden flex flex-col items-center justify-center">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none" />
+        <h3 className="text-4xl md:text-5xl font-bold text-white mb-8 relative z-10 text-center">
+          Ready to push boundaries?
+        </h3>
+        <Link 
+          href="/join"
+          className="group relative z-10 flex items-center justify-center gap-3 bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]"
+        >
+          Join Us <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        </Link>
+      </section>
+
+      <ContactUsSection />
     </main>
   );
 }

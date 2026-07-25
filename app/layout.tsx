@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -36,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} dark`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-white selection:text-black" suppressHydrationWarning>
+        <Navbar />
         <main className="flex-1">
           {children}
         </main>

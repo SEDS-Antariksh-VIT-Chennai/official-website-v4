@@ -2,30 +2,47 @@
 
 import { useEffect, useState } from "react";
 import OptionWheel from "@/src/component/OptionWheel";
+import { useRouter, usePathname } from "next/navigation";
 
 const sections = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "events", label: "Events" },
-  { id: "departments", label: "Divisions" },
-  { id: "join", label: "Join Us" },
+  { id: "home", label: "Home", path: "/" },
+  { id: "about", label: "About", path: "/" },
+  { id: "projects", label: "Projects", path: "/" },
+  { id: "events", label: "Events", path: "/" },
+  { id: "departments", label: "Divisions", path: "/" },
+  { id: "join", label: "Join Us", path: "/join" },
+  { id: "contact", label: "Contact", path: "/" },
 ];
 
 export default function NavWheel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
+    // Determine active index based on path if not on home
+    if (pathname !== "/") {
+      const idx = sections.findIndex(s => s.path === pathname);
+      if (idx !== -1) setActiveIndex(idx);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+
     const handleScroll = () => {
       if (isScrolling) return;
 
       const scrollPosition = window.scrollY + window.innerHeight / 3;
 
       for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i].id);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveIndex(i);
-          break;
+        if (sections[i].path === "/") {
+          const section = document.getElementById(sections[i].id);
+          if (section && section.offsetTop <= scrollPosition) {
+            setActiveIndex(i);
+            break;
+          }
         }
       }
     };
@@ -33,23 +50,29 @@ export default function NavWheel() {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isScrolling]);
+  }, [isScrolling, pathname]);
 
   const handleChange = (index: number, item: string) => {
     setActiveIndex(index);
     setIsScrolling(true);
+    
+    const targetSectionDef = sections[index];
 
-    const targetSection = document.getElementById(sections[index].id);
+    if (pathname !== targetSectionDef.path) {
+      router.push(targetSectionDef.path + (targetSectionDef.path === "/" && targetSectionDef.id !== "home" ? `#${targetSectionDef.id}` : ""));
+      setTimeout(() => setIsScrolling(false), 1000);
+      return;
+    }
+
+    const targetSection = document.getElementById(targetSectionDef.id);
     if (targetSection) {
       window.scrollTo({
         top: targetSection.offsetTop,
         behavior: "smooth"
       });
-
-      // Wait for scrolling to finish before re-enabling scroll listener
-      setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
+      setTimeout(() => setIsScrolling(false), 1000);
+    } else {
+      setIsScrolling(false);
     }
   };
 
