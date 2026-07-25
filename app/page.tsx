@@ -11,19 +11,23 @@ import { ArrowRight } from "lucide-react";
 import prisma from "@/lib/prisma";
 
 export default async function Home() {
-  const [events, projects] = await Promise.all([
+  const [events, projects, formConfig] = await Promise.all([
     prisma.event.findMany({
       orderBy: { date: 'desc' }
     }),
     prisma.project.findMany({
       where: { isPinned: true },
       orderBy: { createdAt: 'desc' }
+    }),
+    prisma.formConfig.findUnique({
+      where: { id: "default" }
     })
   ]);
 
   return (
-    <main id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
+    <main id="home" className="relative min-h-screen w-full">
       <NavWheel />
+      <div className="relative z-10 bg-background shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
       <div className="relative min-h-screen w-full">
         {/* Background Particles layer could go here */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/[0.03] to-transparent pointer-events-none z-0" />
@@ -49,18 +53,33 @@ export default async function Home() {
       <DepartmentsSection />
       
       {/* Join Us CTA */}
-      <section className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden flex flex-col items-center justify-center">
+      <section id="join" className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden flex flex-col items-center justify-center">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none" />
-        <h3 className="text-4xl md:text-5xl font-bold text-white mb-8 relative z-10 text-center">
-          Ready to push boundaries?
-        </h3>
-        <Link 
-          href="/join"
-          className="group relative z-10 flex items-center justify-center gap-3 bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]"
-        >
-          Join Us <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-        </Link>
+        
+        {formConfig?.isOpen ? (
+          <>
+            <h3 className="text-4xl md:text-5xl font-bold text-white mb-8 relative z-10 text-center">
+              Ready to push boundaries?
+            </h3>
+            <Link 
+              href="/join"
+              className="group relative z-10 flex items-center justify-center gap-3 bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]"
+            >
+              Join Us <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </>
+        ) : (
+          <>
+            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 relative z-10 text-center">
+              Recruitments are closed
+            </h3>
+            <p className="text-lg text-white/50 mb-8 relative z-10 text-center max-w-lg">
+              We are not accepting applications at this time. Follow our social channels to get notified when recruitments open!
+            </p>
+          </>
+        )}
       </section>
+      </div>
 
       <ContactUsSection />
     </main>

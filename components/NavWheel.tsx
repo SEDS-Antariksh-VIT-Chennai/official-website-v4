@@ -10,7 +10,7 @@ const sections = [
   { id: "projects", label: "Projects", path: "/" },
   { id: "events", label: "Events", path: "/" },
   { id: "departments", label: "Divisions", path: "/" },
-  { id: "join", label: "Join Us", path: "/join" },
+  { id: "join", label: "Join Us", path: "/" },
   { id: "contact", label: "Contact", path: "/" },
 ];
 
@@ -115,7 +115,7 @@ export default function NavWheel() {
       data-lenis-prevent="true" 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`fixed right-0 top-1/2 -translate-y-1/2 h-[800px] w-[300px] z-[200] pointer-events-auto transition-all duration-700 ease-in-out origin-right [mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] [-webkit-mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] ${
+      className={`fixed mix-blend-difference right-0 top-1/2 -translate-y-1/2 h-[800px] w-[300px] z-[200] pointer-events-auto transition-all duration-700 ease-in-out origin-right [mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] [-webkit-mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] ${
         isVisible || isHovered ? 'translate-x-0 opacity-100' : 'translate-x-[200px] opacity-0'
       } hover:scale-110`}
     >

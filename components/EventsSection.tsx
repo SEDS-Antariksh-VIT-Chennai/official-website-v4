@@ -232,11 +232,20 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                 </button>
               </div>
             )}
+
+            {showViewAll && (
+              <Link 
+                href="/events"
+                className="group relative flex items-center justify-center gap-2 border border-white/20 bg-white/5 hover:bg-white/10 text-white px-6 md:px-8 py-3 md:py-4 text-xs md:text-sm font-bold uppercase tracking-widest transition-all duration-300 rounded-full"
+              >
+                View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="w-full">
+      <motion.div layout className="w-full">
         <AnimatePresence mode="wait">
           {activeTab === "upcoming" && (
             <motion.div 
@@ -423,18 +432,8 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
 
-      {showViewAll && (
-        <div className="container mx-auto px-6 md:px-12 mt-16 flex justify-center">
-          <Link 
-            href="/events"
-            className="group relative flex items-center justify-center gap-3 border border-white/20 bg-white/5 hover:bg-white/10 text-white px-8 py-4 font-bold uppercase tracking-widest transition-all duration-300 rounded-full"
-          >
-            View All Events <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-      )}
     </section>
   );
 }
