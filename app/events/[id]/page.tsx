@@ -22,7 +22,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         </Link>
         
         {/* Header Section */}
-        <div className="relative w-full aspect-[21/9] md:aspect-[3/1] rounded-3xl overflow-hidden mb-16 border border-white/10 group">
+        <div className="relative w-full aspect-[21/9] md:aspect-[3/1] rounded-none overflow-hidden mb-8 border border-white/10 group">
           <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-xl z-0" />
           {event.coverImage ? (
             <div 
@@ -63,70 +63,69 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-          <div className="lg:col-span-2">
-            <div className="mb-12">
-              <h2 className="text-xs uppercase tracking-[0.3em] text-white/50 mb-6 font-bold">About The Event</h2>
-              <div className="prose prose-invert prose-p:text-white/70 prose-p:leading-relaxed prose-p:text-lg max-w-none">
-                {event.description.split('\n').map((paragraph, i) => (
-                  <p key={i} className="mb-4">{paragraph}</p>
-                ))}
-              </div>
+        {/* Quick Summary (Horizontal Box below cover) */}
+        <div className="tech-glass tech-border p-6 md:p-8 mb-16 flex flex-wrap items-center justify-between gap-8 rounded-none font-mono">
+          <div className="flex items-center gap-8 flex-wrap flex-1">
+            <div>
+              <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Date</p>
+              <p className="text-sm font-bold text-white">{new Date(event.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
             </div>
+            <div className="w-px h-10 bg-white/10 hidden md:block" />
+            <div>
+              <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Location</p>
+              <p className="text-sm font-bold text-white">{event.location}</p>
+            </div>
+            {(event as any).fee && (
+              <>
+                <div className="w-px h-10 bg-white/10 hidden md:block" />
+                <div>
+                  <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Fee</p>
+                  <p className="text-sm font-bold text-white">{(event as any).fee}</p>
+                </div>
+              </>
+            )}
+          </div>
+          <div>
+            <div className={`inline-block text-[10px] font-bold px-4 py-2 uppercase tracking-widest rounded-none border ${isPast ? 'bg-white/10 border-white/20 text-white' : 'bg-white text-black border-white'}`}>
+              {isPast ? 'Completed' : 'Upcoming'}
+            </div>
+          </div>
+        </div>
 
-            {/* Event Buttons */}
-            {!isPast && event.buttons && Array.isArray(event.buttons) && event.buttons.length > 0 && (
-              <div className="flex flex-wrap items-center gap-4 mb-16">
-                {(event.buttons as any[]).map((btn, i) => (
-                  <a 
-                    key={i}
-                    href={btn.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 bg-white text-black px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors border border-transparent hover:scale-105 transform duration-300 rounded-sm"
-                  >
-                    {btn.label} <ArrowRight className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
-            )}
-            
-            {/* Masonry Gallery */}
-            {event.gallery && event.gallery.length > 0 && (
-              <div className="mt-16 border-t border-white/10 pt-16">
-                <h2 className="text-xs uppercase tracking-[0.3em] text-white/50 mb-8 font-bold">Event Gallery</h2>
-                <MasonryGallery images={event.gallery.map((url: string) => ({ url, caption: event.title }))} />
-              </div>
-            )}
-          </div>
-          
-          <div className="lg:col-span-1">
-            <div className="sticky top-32 p-8 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-xl">
-              <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-widest">Quick Summary</h3>
-              <div className="space-y-6">
-                <div>
-                  <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Date</p>
-                  <p className="text-sm font-medium text-white">{new Date(event.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Location</p>
-                  <p className="text-sm font-medium text-white">{event.location}</p>
-                </div>
-                {(event as any).fee && (
-                  <div>
-                    <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Fee</p>
-                    <p className="text-sm font-medium text-white">{(event as any).fee}</p>
-                  </div>
-                )}
-                <div>
-                  <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Status</p>
-                  <div className="inline-block bg-white/10 text-white text-[10px] font-bold px-3 py-1 uppercase tracking-widest rounded-sm border border-white/10 mt-1">
-                    {isPast ? 'Completed' : 'Upcoming'}
-                  </div>
-                </div>
-              </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2 className="text-xs uppercase tracking-[0.3em] text-white/50 mb-6 font-bold">About The Event</h2>
+            <div className="prose prose-invert prose-p:text-white/70 prose-p:leading-relaxed prose-p:text-lg max-w-none">
+              {event.description.split('\n').map((paragraph, i) => (
+                <p key={i} className="mb-4">{paragraph}</p>
+              ))}
             </div>
           </div>
+
+          {/* Event Buttons */}
+          {!isPast && event.buttons && Array.isArray(event.buttons) && event.buttons.length > 0 && (
+            <div className="flex flex-wrap items-center gap-4 mb-16">
+              {(event.buttons as any[]).map((btn, i) => (
+                <a 
+                  key={i}
+                  href={btn.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-white text-black px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors border border-transparent rounded-none"
+                >
+                  {btn.label} <ArrowRight className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+          )}
+          
+          {/* Masonry Gallery */}
+          {event.gallery && event.gallery.length > 0 && (
+            <div className="mt-16 border-t border-white/10 pt-16">
+              <h2 className="text-xs uppercase tracking-[0.3em] text-white/50 mb-8 font-bold">Event Gallery</h2>
+              <MasonryGallery images={event.gallery.map((url: string) => ({ url, caption: event.title }))} />
+            </div>
+          )}
         </div>
       </div>
     </main>

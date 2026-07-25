@@ -45,10 +45,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           <ArrowLeft className="w-4 h-4" /> Back to Projects
         </Link>
 
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
-          
+        <div className="max-w-4xl mx-auto w-full">
           {/* Main Content */}
-          <div className="w-full lg:w-2/3">
+          <div className="w-full">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 flex items-center justify-center border border-white/10 bg-white/5 rounded-full">
                 <Icon className="w-5 h-5 text-white" />
@@ -68,12 +67,50 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               {project.title}
             </h1>
 
-            <div className="w-full aspect-video overflow-hidden border border-white/10 relative mb-12 group">
+            <div className="w-full aspect-video overflow-hidden border border-white/10 relative mb-8 group rounded-none">
               <div 
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
                 style={{ backgroundImage: `url(${project.image})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            </div>
+
+            {/* Mission Specs (Horizontal Box) */}
+            <div className="tech-glass tech-border p-6 md:p-8 mb-12 flex flex-wrap items-center justify-between gap-8 rounded-none font-mono">
+              <div className="flex items-center gap-8 flex-wrap flex-1">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/5 shrink-0">
+                    <Users className="w-4 h-4 text-white/70" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Team Size</p>
+                    <p className="text-sm font-bold text-white">{project.teamSize || "Unknown"} Members</p>
+                  </div>
+                </div>
+                
+                <div className="w-px h-10 bg-white/10 hidden md:block" />
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/5 shrink-0">
+                    <Calendar className="w-4 h-4 text-white/70" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/40 uppercase tracking-widest mb-1">Timeline</p>
+                    <p className="text-sm font-bold text-white">{project.timeline || "TBD"}</p>
+                  </div>
+                </div>
+              </div>
+              
+              {config?.isOpen && (
+                <div>
+                  <Link 
+                    href="/join"
+                    className="flex items-center justify-center bg-white text-black px-6 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors rounded-none"
+                  >
+                    Apply to Join
+                  </Link>
+                </div>
+              )}
             </div>
 
             <div className="prose prose-invert prose-lg max-w-none">
@@ -86,51 +123,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </p>
             </div>
           </div>
-
-          {/* Sidebar / Meta info */}
-          <div className="w-full lg:w-1/3 flex flex-col gap-8">
-            <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 p-8">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-8 border-b border-white/10 pb-4">
-                Mission Specs
-              </h3>
-              
-              <div className="flex flex-col gap-8">
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/5 shrink-0">
-                    <Users className="w-4 h-4 text-white/70" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Team Size</p>
-                    <p className="text-lg font-medium text-white">{project.teamSize || "Unknown"} Members</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center border border-white/10 bg-white/5 shrink-0">
-                    <Calendar className="w-4 h-4 text-white/70" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Timeline</p>
-                    <p className="text-lg font-medium text-white">{project.timeline || "TBD"}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {config?.isOpen && (
-              <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 p-8 flex flex-col items-center text-center">
-                <h4 className="text-xl font-bold text-white mb-4">Interested in this project?</h4>
-                <p className="text-white/50 text-sm mb-8">We are recruiting passionate students to join this mission.</p>
-                <Link 
-                  href="/join"
-                  className="w-full flex items-center justify-center gap-3 bg-white text-black px-6 py-4 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
-                >
-                  Apply to Join
-                </Link>
-              </div>
-            )}
-          </div>
-
         </div>
       </div>
       

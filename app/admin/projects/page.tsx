@@ -18,12 +18,12 @@ export default async function ProjectsPage() {
           <h1 className="text-3xl font-bold text-white mb-2">Projects Management</h1>
           <p className="text-white/50 text-sm">Add, edit, or remove club projects.</p>
         </div>
-        <Link href="/admin/projects/new" className="flex items-center gap-2 bg-white text-black px-6 py-3 font-bold uppercase tracking-widest text-xs rounded hover:bg-gray-200 transition-colors">
+        <Link href="/admin/projects/new" className="flex items-center gap-2 bg-white text-black px-6 py-3 font-bold uppercase tracking-widest text-xs rounded-none hover:bg-gray-200 transition-colors">
           <Plus className="w-4 h-4" /> Create Project
         </Link>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white/5 border border-white/10 rounded-none tech-glass overflow-hidden font-mono">
         <table className="w-full text-left">
           <thead className="bg-white/5 text-[10px] uppercase tracking-widest text-white/50">
             <tr>
@@ -44,7 +44,7 @@ export default async function ProjectsPage() {
                 <td className="px-6 py-4 text-white/50 text-xs uppercase tracking-widest">{project.status}</td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Link href={`/admin/projects/${project.id}/edit`} className="p-2 hover:bg-white/10 rounded transition-colors text-white/50 hover:text-white" title="Edit">
+                    <Link href={`/admin/projects/${project.id}/edit`} className="p-2 border border-white/5 hover:bg-white/10 hover:border-white/30 rounded-none transition-colors text-white/50 hover:text-white" title="Edit">
                       <Edit2 className="w-4 h-4" />
                     </Link>
                     <DeleteButton id={project.id} />

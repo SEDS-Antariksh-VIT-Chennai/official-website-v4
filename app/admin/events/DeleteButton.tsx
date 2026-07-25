@@ -27,7 +27,7 @@ export default function DeleteButton({ id }: { id: string }) {
       <button 
         onClick={() => setShowModal(true)}
         disabled={isPending}
-        className="p-2 hover:bg-red-500/10 rounded transition-colors text-white/50 hover:text-red-400 disabled:opacity-50" 
+        className="p-2 border border-white/5 hover:bg-red-500/10 hover:border-red-500/50 rounded-none transition-colors text-white/50 hover:text-red-400 disabled:opacity-50" 
         title="Delete"
       >
         <Trash2 className="w-4 h-4" />
@@ -44,11 +44,11 @@ export default function DeleteButton({ id }: { id: string }) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-zinc-950 border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-[0_0_40px_rgba(0,0,0,0.5)] relative overflow-hidden"
+                className="tech-glass tech-border p-6 w-full max-w-md shadow-[0_0_40px_rgba(0,0,0,0.5)] relative overflow-hidden font-mono"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex gap-4 items-start mb-6">
-                  <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0 border border-red-500/20">
+                  <div className="w-10 h-10 rounded-none bg-red-500/10 flex items-center justify-center flex-shrink-0 border border-red-500/20">
                     <AlertTriangle className="w-5 h-5 text-red-500" />
                   </div>
                   <div>
@@ -62,13 +62,13 @@ export default function DeleteButton({ id }: { id: string }) {
                 <div className="flex justify-end gap-3 pt-2">
                   <button 
                     onClick={() => setShowModal(false)}
-                    className="px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-muted hover:text-foreground bg-white/5 hover:bg-white/10 rounded transition-colors"
+                    className="px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-none transition-colors"
                   >
                     Cancel
                   </button>
                   <button 
                     onClick={confirmDelete}
-                    className="px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-foreground bg-red-600 hover:bg-red-500 rounded transition-colors"
+                    className="px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-white bg-red-600/80 hover:bg-red-500 rounded-none border border-red-500/50 hover:border-red-500 transition-colors"
                   >
                     Delete
                   </button>
