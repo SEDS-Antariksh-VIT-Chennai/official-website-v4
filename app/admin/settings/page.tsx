@@ -22,7 +22,7 @@ export default function SettingsPage() {
       if (data) {
         // Migration or initialize
         let pages = data.customFields;
-        if (!pages || !Array.isArray(pages) || (pages.length > 0 && !pages[0].fields)) {
+        if (!pages || !Array.isArray(pages) || (pages.length > 0 && !(pages[0] as any)?.fields)) {
           // It's the old format or empty, let's reset to an empty page structure
           pages = [
             { id: "page_1", title: "General Details", description: "", fields: [] }
