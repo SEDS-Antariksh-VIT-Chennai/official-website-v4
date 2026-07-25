@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { submitApplication } from "@/src/actions/public";
 
 type FormField = { id: string; type: string; label: string; required: boolean; options?: string[] };
-type FormPage = { id: string; title: string; description: string; fields: FormField[] };
+type FormPage = { id: string; title: string; description: string; fields: FormField[]; targetDepartment?: string; };
 
 export default function JoinUsSection({ config }: { config?: any }) {
   const isOpen = config ? config.isOpen : true;
