@@ -33,7 +33,7 @@ export default function SettingsPage() {
           ...data,
           customFields: pages
         });
-        setActivePageId(pages[0].id);
+        setActivePageId((pages[0] as any)?.id || "page_1");
       }
       setLoading(false);
     });
