@@ -1,5 +1,4 @@
-import EventsSection from "@/components/EventsSection";
-import NavWheel from "@/components/NavWheel";
+import EventsPageContent from "./EventsPageContent";
 import prisma from "@/lib/prisma";
 
 export default async function EventsPage() {
@@ -9,8 +8,7 @@ export default async function EventsPage() {
 
   return (
     <main className="min-h-screen w-full bg-background pt-20">
-      <NavWheel />
-      <EventsSection events={events} />
+      <EventsPageContent events={events} />
     </main>
   );
 }

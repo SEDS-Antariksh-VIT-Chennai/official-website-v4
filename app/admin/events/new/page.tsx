@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createEvent } from "@/src/actions/admin";
@@ -22,6 +22,7 @@ export default function NewEventPage() {
     fee: "",
     coverImage: "",
     buttons: [] as { label: string, url: string }[],
+    isPinned: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,6 +37,7 @@ export default function NewEventPage() {
     if (formData.fee) data.append("fee", formData.fee);
     data.append("coverImage", formData.coverImage);
     data.append("buttons", JSON.stringify(formData.buttons));
+    data.append("isPinned", String(formData.isPinned));
     
     if (imageFile) {
       data.append("coverImageFile", imageFile);
@@ -146,15 +148,28 @@ export default function NewEventPage() {
                       setFormData({...formData, coverImage: ""});
                     }
                   }}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  className="absolute inset-0 opacity-0 cursor-pointer z-10"
                 />
                 {imagePreview ? (
-                  <div className="relative w-full max-w-sm aspect-[4/5] rounded overflow-hidden border border-white/20">
+                  <div className="relative w-full max-w-sm aspect-[4/5] rounded overflow-hidden border border-white/20 group">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={imagePreview} alt="Preview" className="object-cover w-full h-full" />
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <p className="text-white font-bold">Click to change</p>
                     </div>
+                    <button 
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setImageFile(null);
+                        setImagePreview(null);
+                      }}
+                      className="absolute top-2 right-2 bg-black/80 backdrop-blur-md border border-white/10 text-white/70 hover:text-white rounded-full p-2 flex items-center justify-center transition-all z-20 hover:bg-red-500 hover:border-red-500 shadow-xl"
+                      title="Remove image"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
                 ) : (
                   <div className="text-center pointer-events-none">
@@ -221,9 +236,10 @@ export default function NewEventPage() {
                             setGalleryFiles(prev => prev.filter((_, idx) => idx !== i));
                             setGalleryPreviews(prev => prev.filter((_, idx) => idx !== i));
                           }}
-                          className="absolute top-1 right-1 bg-black/70 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-red-500"
+                          className="absolute top-1 right-1 bg-black/80 backdrop-blur-md border border-white/10 text-white/70 hover:text-white rounded-full p-1.5 flex items-center justify-center transition-all z-20 hover:bg-red-500 hover:border-red-500 shadow-lg"
+                          title="Remove image"
                         >
-                          &times;
+                          <X className="w-3 h-3" />
                         </button>
                       </div>
                     ))}
@@ -299,6 +315,25 @@ export default function NewEventPage() {
                 </button>
               </div>
             ))}
+          </div>
+
+          <div className="flex flex-col gap-2 border-t border-white/10 pt-6">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <div className="relative">
+                <input 
+                  type="checkbox" 
+                  className="sr-only" 
+                  checked={formData.isPinned}
+                  onChange={(e) => setFormData({...formData, isPinned: e.target.checked})}
+                />
+                <div className={`block w-14 h-8 rounded-full transition-colors ${formData.isPinned ? 'bg-white' : 'bg-white/10 border border-white/20'}`}></div>
+                <div className={`absolute left-1 top-1 bg-black w-6 h-6 rounded-full transition-transform ${formData.isPinned ? 'translate-x-6' : ''}`}></div>
+              </div>
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-white">Pin Event</span>
+                <p className="text-[10px] text-white/50">Pinned events will be exclusively displayed in the home page Past Archive.</p>
+              </div>
+            </label>
           </div>
 
           <div className="pt-4 border-t border-white/10 flex items-center justify-between">

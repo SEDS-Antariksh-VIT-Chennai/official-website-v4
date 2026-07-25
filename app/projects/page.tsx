@@ -1,11 +1,14 @@
-import ProjectsSection from "@/components/ProjectsSection";
-import NavWheel from "@/components/NavWheel";
+import ProjectsPageContent from "./ProjectsPageContent";
+import prisma from "@/lib/prisma";
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await prisma.project.findMany({
+    orderBy: { createdAt: 'desc' }
+  });
+
   return (
     <main className="min-h-screen w-full bg-background pt-20">
-      <NavWheel />
-      <ProjectsSection />
+      <ProjectsPageContent projects={projects} />
     </main>
   );
 }

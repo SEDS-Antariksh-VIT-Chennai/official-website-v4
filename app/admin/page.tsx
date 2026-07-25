@@ -1,4 +1,4 @@
-import { Users, Calendar, LayoutTemplate } from "lucide-react";
+import { Users, Calendar, LayoutTemplate, Rocket } from "lucide-react";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -11,6 +11,7 @@ export default async function AdminDashboard() {
   // Fetch real stats from DB
   const pendingCount = await prisma.application.count({ where: { status: 'PENDING' } });
   const eventsCount = await prisma.event.count();
+  const projectsCount = await prisma.project.count();
   const formConfig = await prisma.formConfig.findUnique({ where: { id: 'default' } });
   const customFieldsCount = formConfig?.customFields ? (formConfig.customFields as any[]).length : 0;
   
@@ -21,6 +22,7 @@ export default async function AdminDashboard() {
 
   const stats = [
     { label: "Pending Applications", value: pendingCount.toString(), icon: Users, href: "/admin/applications", color: "text-blue-400" },
+    { label: "Total Projects", value: projectsCount.toString(), icon: Rocket, href: "/admin/projects", color: "text-orange-400" },
     { label: "Total Events", value: eventsCount.toString(), icon: Calendar, href: "/admin/events", color: "text-green-400" },
     { label: "Custom Fields", value: customFieldsCount.toString(), icon: LayoutTemplate, href: "/admin/settings", color: "text-purple-400" },
   ];
@@ -30,7 +32,7 @@ export default async function AdminDashboard() {
       <h1 className="text-3xl font-bold text-white mb-2">Dashboard Overview</h1>
       <p className="text-white/50 text-sm mb-12">Welcome back. Here's what's happening today.</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {stats.map((stat, i) => (
           <Link key={i} href={stat.href} className="bg-white/5 border border-white/10 rounded-xl p-6 flex items-center justify-between hover:bg-white/10 transition-colors group">
             <div>

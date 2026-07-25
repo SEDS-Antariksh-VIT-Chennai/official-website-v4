@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { Calendar, MapPin, ArrowRight, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import MasonryGallery from "@/components/MasonryGallery";
-import NavWheel from "@/components/NavWheel";
 
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -17,7 +16,6 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
   
   return (
     <main className="min-h-screen w-full bg-background pt-24 pb-32">
-      <NavWheel />
       <div className="container mx-auto px-6 md:px-12 max-w-5xl">
         <Link href="/events" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest mb-12 group">
           <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" /> Back to Events
@@ -97,7 +95,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
             {event.gallery && event.gallery.length > 0 && (
               <div className="mt-16 border-t border-white/10 pt-16">
                 <h2 className="text-xs uppercase tracking-[0.3em] text-white/50 mb-8 font-bold">Event Gallery</h2>
-                <MasonryGallery images={event.gallery} />
+                <MasonryGallery images={event.gallery.map((url: string) => ({ url, caption: event.title }))} />
               </div>
             )}
           </div>

@@ -2,7 +2,7 @@
 
 import { Trash2, AlertTriangle, X } from "lucide-react";
 import { useTransition, useState, useEffect } from "react";
-import { deleteEvent } from "@/src/actions/admin";
+import { deleteProject } from "@/src/actions/admin";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
@@ -17,7 +17,7 @@ export default function DeleteButton({ id }: { id: string }) {
 
   const confirmDelete = () => {
     startTransition(() => {
-      deleteEvent(id);
+      deleteProject(id);
       setShowModal(false);
     });
   };
@@ -52,9 +52,9 @@ export default function DeleteButton({ id }: { id: string }) {
                     <AlertTriangle className="w-5 h-5 text-red-500" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-2">Delete Event?</h3>
+                    <h3 className="text-xl font-bold text-white mb-2">Delete Project?</h3>
                     <p className="text-white/60 text-sm leading-relaxed text-left">
-                      Are you sure you want to delete this event? This action cannot be undone and it will be permanently removed from the database.
+                      Are you sure you want to delete this project? This action cannot be undone and it will be permanently removed from the database.
                     </p>
                   </div>
                 </div>

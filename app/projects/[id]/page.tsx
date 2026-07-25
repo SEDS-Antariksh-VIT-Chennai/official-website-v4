@@ -1,22 +1,36 @@
-import { projects } from "@/src/data/projects";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Users, Calendar, Rocket } from "lucide-react";
-import NavWheel from "@/components/NavWheel";
+import { ArrowLeft, Users, Calendar, Rocket, Wrench, Code } from "lucide-react";
+import prisma from "@/lib/prisma";
+import MasonryGallery from "@/components/MasonryGallery";
+import { getFormConfig } from "@/src/actions/admin";
+
+const iconMap: Record<string, any> = {
+  Rocket,
+  Wrench,
+  Code,
+};
 
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const project = projects.find(p => p.id === parseInt(id));
+  const project = await prisma.project.findUnique({
+    where: { id }
+  });
+  const config = await getFormConfig();
 
   if (!project) {
-    notFound();
+    return notFound();
   }
 
-  const Icon = project.icon || Rocket;
+  const Icon = iconMap[project.iconName || ""] || Rocket;
+  
+  const galleryImages = (project.gallery || []).map((url: string) => ({
+    url,
+    caption: project.title
+  }));
 
   return (
-    <main className="min-h-screen w-full bg-background pt-32 pb-24 overflow-hidden relative">
-      <NavWheel />
+    <main className="min-h-screen w-full bg-background pt-24 pb-32">
       
       {/* Ambient background glow */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none" />
@@ -103,20 +117,32 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 p-8 flex flex-col items-center text-center">
-              <h4 className="text-xl font-bold text-white mb-4">Interested in this project?</h4>
-              <p className="text-white/50 text-sm mb-8">We are recruiting passionate students to join this mission.</p>
-              <Link 
-                href="/join"
-                className="w-full flex items-center justify-center gap-3 bg-white text-black px-6 py-4 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
-              >
-                Apply to Join
-              </Link>
-            </div>
+            {config?.isOpen && (
+              <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 p-8 flex flex-col items-center text-center">
+                <h4 className="text-xl font-bold text-white mb-4">Interested in this project?</h4>
+                <p className="text-white/50 text-sm mb-8">We are recruiting passionate students to join this mission.</p>
+                <Link 
+                  href="/join"
+                  className="w-full flex items-center justify-center gap-3 bg-white text-black px-6 py-4 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
+                >
+                  Apply to Join
+                </Link>
+              </div>
+            )}
           </div>
 
         </div>
       </div>
+      
+      {galleryImages.length > 0 && (
+        <div className="container mx-auto px-6 md:px-12 mt-32 relative z-10">
+          <div className="flex flex-col items-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Project Gallery</h2>
+            <p className="text-white/50">Glimpses from the development and testing phases.</p>
+          </div>
+          <MasonryGallery images={galleryImages} />
+        </div>
+      )}
     </main>
   );
 }

@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { X } from "lucide-react";
 
-export default function MasonryGallery({ images }: { images: string[] }) {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+export default function MasonryGallery({ images }: { images: { url: string, caption?: string }[] }) {
+  const [selectedImage, setSelectedImage] = useState<{ url: string, caption?: string } | null>(null);
 
   if (!images || images.length === 0) return null;
 
@@ -24,7 +24,7 @@ export default function MasonryGallery({ images }: { images: string[] }) {
           >
             <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-sm z-0" />
             <img 
-              src={img} 
+              src={img.url} 
               alt={`Gallery Image ${idx + 1}`} 
               className="relative z-10 w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" 
               loading="lazy"
@@ -59,11 +59,21 @@ export default function MasonryGallery({ images }: { images: string[] }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            src={selectedImage} 
+            src={selectedImage.url} 
             alt="Full size gallery image" 
             className="max-w-full max-h-[90vh] object-contain rounded-lg border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
           />
+          
+          {selectedImage.caption && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full text-sm font-bold tracking-widest uppercase shadow-2xl"
+            >
+              {selectedImage.caption}
+            </motion.div>
+          )}
         </div>
       )}
     </>

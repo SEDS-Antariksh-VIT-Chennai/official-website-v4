@@ -74,7 +74,7 @@ const PRESETS: Record<string, Partial<GradualBlurProps>> = {
   smooth: { height: '8rem', curve: 'bezier', divCount: 10 },
   sharp: { height: '5rem', curve: 'linear', divCount: 4 },
 
-  header: { position: 'top', height: '8rem', curve: 'ease-out' },
+  header: { position: 'top', height: '5rem', curve: 'ease-out' },
   footer: { position: 'bottom', height: '8rem', curve: 'ease-out' },
   sidebar: { position: 'left', height: '6rem', strength: 2.5 },
 

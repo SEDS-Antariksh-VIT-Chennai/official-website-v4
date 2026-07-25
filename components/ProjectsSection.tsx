@@ -3,16 +3,27 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Code, Wrench, Rocket } from "lucide-react";
 import { useRef } from "react";
-
-import { projects } from "@/src/data/projects";
-
 import Link from "next/link";
 
-export default function ProjectsSection({ showViewAll = false }: { showViewAll?: boolean }) {
+const iconMap: Record<string, any> = {
+  Rocket,
+  Wrench,
+  Code,
+};
+
+export default function ProjectsSection({ 
+  projects,
+  showViewAll = false,
+  noTopPadding = false 
+}: { 
+  projects: any[],
+  showViewAll?: boolean,
+  noTopPadding?: boolean 
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   return (
-    <section id="projects" className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden">
+    <section id="projects" className={`relative w-full ${noTopPadding ? 'pb-32' : 'py-32'} bg-background border-t border-white/5 overflow-hidden`}>
       <div className="container mx-auto px-6 md:px-12 mb-16 flex flex-col items-center text-center">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
@@ -76,7 +87,10 @@ export default function ProjectsSection({ showViewAll = false }: { showViewAll?:
                 
                 <div className="absolute bottom-4 left-4 flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
-                    <project.icon className="w-4 h-4 text-white" />
+                    {(() => {
+                      const Icon = iconMap[project.iconName] || Rocket;
+                      return <Icon className="w-4 h-4 text-white" />;
+                    })()}
                   </div>
                   <span className="text-xs font-bold tracking-widest text-white uppercase shadow-sm">
                     {project.category}

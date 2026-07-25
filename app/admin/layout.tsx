@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { LayoutDashboard, Calendar, Users, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, Settings, LogOut, Rocket } from "lucide-react";
 import { auth, signOut } from "@/auth";
 import AdminLoginPage from "./login/page";
 
 const sidebarLinks = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { name: "Projects", href: "/admin/projects", icon: Rocket },
   { name: "Events", href: "/admin/events", icon: Calendar },
   { name: "Applications", href: "/admin/applications", icon: Users },
   { name: "Form Config", href: "/admin/settings", icon: Settings },

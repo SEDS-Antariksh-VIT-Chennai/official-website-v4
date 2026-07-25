@@ -17,6 +17,9 @@ const sections = [
 export default function NavWheel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  
   const router = useRouter();
   const pathname = usePathname();
 
@@ -31,7 +34,20 @@ export default function NavWheel() {
   useEffect(() => {
     if (pathname !== "/") return;
 
+    let timeoutId: NodeJS.Timeout;
+
     const handleScroll = () => {
+      // Show wheel when scrolling starts
+      setIsVisible(true);
+      
+      // Clear existing timeout
+      if (timeoutId) clearTimeout(timeoutId);
+      
+      // Hide wheel after 1.5s of no scrolling (unless hovered)
+      timeoutId = setTimeout(() => {
+        setIsVisible(false);
+      }, 1500);
+
       if (isScrolling) return;
 
       const scrollPosition = window.scrollY + window.innerHeight / 3;
@@ -47,14 +63,32 @@ export default function NavWheel() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Initial check but don't show it just for loading
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [isScrolling, pathname]);
+
+  // Keep it visible if hovered
+  useEffect(() => {
+    if (isHovered) {
+      setIsVisible(true);
+    } else {
+      // If we stop hovering, hide it after a delay
+      const timeoutId = setTimeout(() => {
+        setIsVisible(false);
+      }, 1500);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isHovered]);
 
   const handleChange = (index: number, item: string) => {
     setActiveIndex(index);
     setIsScrolling(true);
+    setIsVisible(true);
     
     const targetSectionDef = sections[index];
 
@@ -77,7 +111,14 @@ export default function NavWheel() {
   };
 
   return (
-    <div data-lenis-prevent="true" className="fixed right-0 top-1/2 -translate-y-1/2 h-[800px] w-[300px] z-[200] pointer-events-auto hover:scale-110 transition-all duration-700 ease-in-out origin-right [mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] [-webkit-mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)]">
+    <div 
+      data-lenis-prevent="true" 
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`fixed right-0 top-1/2 -translate-y-1/2 h-[800px] w-[300px] z-[200] pointer-events-auto transition-all duration-700 ease-in-out origin-right [mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] [-webkit-mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] ${
+        isVisible || isHovered ? 'translate-x-0 opacity-100' : 'translate-x-[200px] opacity-0'
+      } hover:scale-110`}
+    >
       <OptionWheel
         items={sections.map(s => s.label)}
         defaultSelected={activeIndex}

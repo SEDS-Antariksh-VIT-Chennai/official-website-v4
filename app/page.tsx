@@ -11,9 +11,15 @@ import { ArrowRight } from "lucide-react";
 import prisma from "@/lib/prisma";
 
 export default async function Home() {
-  const events = await prisma.event.findMany({
-    orderBy: { date: 'desc' }
-  });
+  const [events, projects] = await Promise.all([
+    prisma.event.findMany({
+      orderBy: { date: 'desc' }
+    }),
+    prisma.project.findMany({
+      where: { isPinned: true },
+      orderBy: { createdAt: 'desc' }
+    })
+  ]);
 
   return (
     <main id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
@@ -38,8 +44,8 @@ export default async function Home() {
       </div>
 
       <AboutSection />
-      <ProjectsSection showViewAll={true} />
-      <EventsSection events={events} />
+      <ProjectsSection projects={projects} showViewAll={true} />
+      <EventsSection events={events} showViewAll={true} showTabs={true} />
       <DepartmentsSection />
       
       {/* Join Us CTA */}
