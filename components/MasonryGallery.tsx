@@ -19,7 +19,7 @@ export default function MasonryGallery({ images }: { images: { url: string, capt
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
-            className="relative w-full break-inside-avoid overflow-hidden rounded-xl border border-white/10 group cursor-pointer"
+            className="relative w-full break-inside-avoid overflow-hidden rounded-none border border-white/20 tech-glass group cursor-pointer"
             onClick={() => setSelectedImage(img)}
           >
             <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-sm z-0" />
@@ -30,8 +30,8 @@ export default function MasonryGallery({ images }: { images: { url: string, capt
               loading="lazy"
             />
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
-              <span className="text-white text-sm font-bold uppercase tracking-widest bg-black/50 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md">
-                View Full
+              <span className="text-white text-xs font-mono font-bold uppercase tracking-widest bg-black/50 px-4 py-2 rounded-none border border-white/20 backdrop-blur-md tech-glass tech-border">
+                [View Full]
               </span>
             </div>
           </motion.div>
@@ -45,7 +45,7 @@ export default function MasonryGallery({ images }: { images: { url: string, capt
           onClick={() => setSelectedImage(null)}
         >
           <button 
-            className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-[10000]"
+            className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-none border border-white/20 tech-glass tech-border transition-colors z-[10000]"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedImage(null);
@@ -61,7 +61,7 @@ export default function MasonryGallery({ images }: { images: { url: string, capt
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
             src={selectedImage.url} 
             alt="Full size gallery image" 
-            className="max-w-full max-h-[90vh] object-contain rounded-lg border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            className="max-w-full max-h-[90vh] object-contain rounded-none border border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
           />
           
@@ -69,7 +69,7 @@ export default function MasonryGallery({ images }: { images: { url: string, capt
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full text-sm font-bold tracking-widest uppercase shadow-2xl"
+              className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-none text-xs font-mono font-bold tracking-widest uppercase shadow-2xl tech-glass tech-border"
             >
               {selectedImage.caption}
             </motion.div>

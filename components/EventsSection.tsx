@@ -61,7 +61,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
   // Grid view (for /events page)
   if (!showTabs) {
     return (
-      <section id="events" className={`relative w-full ${noTopPadding ? 'pb-32' : 'py-32'} bg-background border-t border-white/5 overflow-hidden`}>
+      <section id="events" className={`relative w-full ${noTopPadding ? 'pb-20' : 'py-20'} bg-background border-t border-white/5 overflow-hidden`}>
         <div className="container mx-auto px-6 md:px-12 mb-12 flex flex-col md:flex-row md:items-end justify-between">
           <div className="mb-8 md:mb-0">
             {!noTopPadding && (
@@ -70,7 +70,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6 }}
-                className="text-sm uppercase tracking-[0.3em] text-white/50 mb-4"
+                className="text-sm font-mono uppercase tracking-[0.3em] text-white/50 mb-4"
               >
                 Missions & Gatherings
               </motion.h2>
@@ -105,7 +105,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="flex flex-col group cursor-pointer relative overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-700 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] rounded-2xl bg-white/[0.02] h-full"
+                      className="flex flex-col group cursor-pointer relative overflow-hidden border border-white/20 hover:border-white/40 transition-all duration-700 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] rounded-none tech-glass h-full"
                     >
                       <div className="relative w-full overflow-hidden z-10 border-b border-white/10 bg-white/5 flex items-center justify-center shrink-0 aspect-video">
                         {event.coverImage ? (
@@ -117,7 +117,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                           <Calendar className="w-16 h-16 text-white/20" />
                         )}
                         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
-                        <div className={`absolute top-4 left-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 uppercase tracking-[0.2em] ${status === 'Completed' ? '' : 'bg-white text-black'}`}>
+                        <div className={`absolute top-4 left-4 border border-white/20 text-[10px] font-mono font-bold px-3 py-1 uppercase tracking-[0.2em] ${status === 'Completed' ? 'tech-glass text-white' : 'bg-white text-black'}`}>
                           {status}
                         </div>
                       </div>
@@ -142,7 +142,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                           {event.description}
                         </p>
                         
-                        <div className="mt-auto pt-2 flex items-center justify-center gap-3 bg-white text-black px-6 py-4 font-bold uppercase tracking-widest text-xs hover:bg-gray-200 transition-colors rounded">
+                        <div className="mt-auto pt-2 flex items-center justify-center gap-3 bg-transparent border border-white/20 tech-border text-white hover:bg-white/10 hover:border-white/50 px-6 py-4 font-mono font-bold uppercase tracking-widest text-xs transition-colors rounded-none">
                           <span>Event Details</span>
                           <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                         </div>
@@ -168,7 +168,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
 
   // Original Home Page Layout
   return (
-    <section id="events" className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden">
+    <section id="events" className="relative w-full py-20 bg-background border-t border-white/5 overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 mb-12 flex flex-col md:flex-row md:items-end justify-between">
         <div className="mb-8 md:mb-0">
           <motion.h2 
@@ -176,24 +176,24 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="text-sm uppercase tracking-[0.3em] text-white/50 mb-4"
+            className="text-sm font-mono uppercase tracking-[0.3em] text-white/50 mb-4"
           >
             Missions & Gatherings
           </motion.h2>
           
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-md">
+            <div className="flex items-center gap-2 p-1 border border-white/20 tech-glass">
               <div className="relative flex items-center">
                 <button
                   onClick={() => setActiveTab("upcoming")}
-                  className={`relative z-10 px-6 md:px-10 py-3 md:py-4 text-sm md:text-base font-bold tracking-widest uppercase transition-colors duration-500 rounded-full ${activeTab === "upcoming" ? "text-black" : "text-white/50 hover:text-white"}`}
+                  className={`relative z-10 px-6 md:px-10 py-3 md:py-4 text-xs md:text-sm font-mono font-bold tracking-widest uppercase transition-colors duration-500 rounded-none ${activeTab === "upcoming" ? "text-black" : "text-white/50 hover:text-white"}`}
                 >
                   Upcoming
                 </button>
                 {activeTab === "upcoming" && (
                   <motion.div 
                     layoutId="activeTabIndicator"
-                    className="absolute inset-0 bg-white rounded-full z-0"
+                    className="absolute inset-0 bg-white z-0"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -202,41 +202,24 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
               <div className="relative flex items-center">
                 <button
                   onClick={() => setActiveTab("past")}
-                  className={`relative z-10 px-6 md:px-10 py-3 md:py-4 text-sm md:text-base font-bold tracking-widest uppercase transition-colors duration-500 rounded-full ${activeTab === "past" ? "text-black" : "text-white/50 hover:text-white"}`}
+                  className={`relative z-10 px-6 md:px-10 py-3 md:py-4 text-xs md:text-sm font-mono font-bold tracking-widest uppercase transition-colors duration-500 rounded-none ${activeTab === "past" ? "text-black" : "text-white/50 hover:text-white"}`}
                 >
                   Past Archive
                 </button>
                 {activeTab === "past" && (
                   <motion.div 
                     layoutId="activeTabIndicator"
-                    className="absolute inset-0 bg-white rounded-full z-0"
+                    className="absolute inset-0 bg-white z-0"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
               </div>
             </div>
 
-            {((activeTab === 'upcoming' && upcomingEventsList.length > 1) || (activeTab === 'past' && pastEvents.length > 1)) && (
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => handleScrollClick('left')}
-                  className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button 
-                  onClick={() => handleScrollClick('right')}
-                  className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-            )}
-
             {showViewAll && (
               <Link 
                 href="/events"
-                className="group relative flex items-center justify-center gap-2 border border-white/20 bg-white/5 hover:bg-white/10 text-white px-6 md:px-8 py-3 md:py-4 text-xs md:text-sm font-bold uppercase tracking-widest transition-all duration-300 rounded-full"
+                className="group relative flex tech-border items-center justify-center gap-2 border border-white/20 tech-glass hover:bg-white/10 hover:border-white/50 text-white px-6 md:px-8 py-3 md:py-4 text-xs font-mono font-bold uppercase tracking-widest transition-colors duration-300 rounded-none"
               >
                 View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -281,12 +264,28 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                   {/* Details */}
                   <div className="w-full lg:w-2/3 flex flex-col">
                     <div className="flex items-center gap-3 mb-8 self-start">
-                      <div className="inline-block bg-white text-black text-xs font-bold px-4 py-2 uppercase tracking-widest">
+                      <div className="inline-block bg-white text-black text-[10px] font-mono font-bold px-4 py-2 uppercase tracking-widest">
                         Upcoming
                       </div>
                       {upcomingEventsList.length > 1 && (
-                        <div className="bg-white/10 text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/20 uppercase tracking-[0.2em]">
-                          {upcomingIndex + 1} / {upcomingEventsList.length}
+                        <div className="flex items-center gap-3">
+                          <div className="tech-glass text-white text-[10px] font-mono font-bold px-3 py-1 border border-white/20 uppercase tracking-[0.2em]">
+                            {upcomingIndex + 1} / {upcomingEventsList.length}
+                          </div>
+                          <div className="flex items-center gap-2 ml-2">
+                            <button 
+                              onClick={(e) => { e.preventDefault(); handleScrollClick('left'); }}
+                              className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20"
+                            >
+                              <ChevronLeft className="w-4 h-4" />
+                            </button>
+                            <button 
+                              onClick={(e) => { e.preventDefault(); handleScrollClick('right'); }}
+                              className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20"
+                            >
+                              <ChevronRight className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -329,7 +328,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                             href={btn.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-3 w-full sm:w-auto bg-white text-black px-8 py-4 font-bold uppercase tracking-widest hover:bg-white/90 transition-colors"
+                            className="flex tech-border items-center justify-center gap-3 w-full sm:w-auto bg-transparent border border-white/20 text-white px-8 py-4 font-mono font-bold uppercase tracking-widest hover:bg-white/10 hover:border-white/50 transition-colors"
                           >
                             {btn.label} <ArrowRight className="w-5 h-5" />
                           </a>
@@ -357,8 +356,24 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="container mx-auto px-6 md:px-12 pb-12"
+              className="container mx-auto px-6 md:px-12 pb-12 relative group"
             >
+              {pastEvents.length > 1 && (
+                <>
+                  <button 
+                    onClick={() => handleScrollClick('left')}
+                    className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20 opacity-0 group-hover:opacity-100"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button 
+                    onClick={() => handleScrollClick('right')}
+                    className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20 opacity-0 group-hover:opacity-100"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </>
+              )}
               <div 
                 ref={containerRef}
                 className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-8 scroll-smooth"
@@ -388,7 +403,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                             <Calendar className="w-12 h-12 text-white/20" />
                           )}
                           <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
-                          <div className="absolute top-4 left-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 uppercase tracking-[0.2em]">
+                          <div className="absolute top-4 left-4 tech-glass border border-white/20 text-white text-[10px] font-mono font-bold px-3 py-1 uppercase tracking-[0.2em]">
                             Completed
                           </div>
                         </div>
@@ -416,7 +431,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                           
                           {/* Arrow indicator on hover */}
                           <div className="mt-8 flex items-center justify-between opacity-50 group-hover:opacity-100 transition-opacity duration-300">
-                            <span className="text-xs font-bold uppercase tracking-widest text-white">Event Details</span>
+                            <span className="text-xs font-mono font-bold uppercase tracking-widest text-white">Event Details</span>
                             <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-2 transition-transform duration-300" />
                           </div>
                         </div>

@@ -34,12 +34,12 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {stats.map((stat, i) => (
-          <Link key={i} href={stat.href} className="bg-white/5 border border-white/10 rounded-xl p-6 flex items-center justify-between hover:bg-white/10 transition-colors group">
+          <Link key={i} href={stat.href} className="tech-glass tech-border rounded-none p-6 flex items-center justify-between hover:bg-white/10 transition-colors group">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-white/50 mb-2">{stat.label}</p>
               <h3 className="text-4xl font-bold text-white">{stat.value}</h3>
             </div>
-            <div className={`w-12 h-12 rounded-full bg-white/5 flex items-center justify-center ${stat.color} group-hover:scale-110 transition-transform`}>
+            <div className={`w-12 h-12 rounded-none tech-glass tech-border border-white/20 flex items-center justify-center ${stat.color} group-hover:scale-110 transition-transform`}>
               <stat.icon className="w-5 h-5" />
             </div>
           </Link>
@@ -47,7 +47,7 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+        <div className="tech-glass tech-border rounded-none p-6">
           <h2 className="text-sm font-bold uppercase tracking-widest text-white mb-6">Recent Applications</h2>
           <div className="flex flex-col gap-4">
             {recentApps.map((app) => (
@@ -71,7 +71,7 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+        <div className="tech-glass tech-border rounded-none p-6">
           <h2 className="text-sm font-bold uppercase tracking-widest text-white mb-6">System Status</h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between">

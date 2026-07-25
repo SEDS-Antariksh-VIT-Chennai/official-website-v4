@@ -40,14 +40,14 @@ const departments = [
 
 export default function DepartmentsSection() {
   return (
-    <section id="departments" className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden">
+    <section id="departments" className="relative w-full py-20 bg-background border-t border-white/5 overflow-hidden">
       <div className="container mx-auto px-6 md:px-12 mb-16">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-sm uppercase tracking-[0.3em] text-white/50 mb-4"
+          className="text-sm font-mono uppercase tracking-[0.3em] text-white/50 mb-4"
         >
           Divisions
         </motion.h2>
@@ -73,7 +73,7 @@ export default function DepartmentsSection() {
               transition={{ duration: 0.7, delay: index * 0.1 }}
             >
               <div 
-                className="relative h-96 w-full rounded-none overflow-hidden group cursor-pointer border border-white/10 hover:border-white/30 transition-all duration-700 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+                className="relative h-96 w-full rounded-none overflow-hidden group cursor-pointer border border-white/20 tech-glass tech-border transition-all duration-700 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)]"
               >
                 {/* Background Image */}
                 <div 
@@ -95,7 +95,7 @@ export default function DepartmentsSection() {
                     <h4 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-white transition-colors duration-700">
                       {dept.title}
                     </h4>
-                    <p className="text-white/50 leading-relaxed group-hover:text-white/80 transition-colors duration-700 max-w-md">
+                    <p className="text-white/50 leading-relaxed group-hover:text-white/80 transition-colors duration-700 max-w-md font-mono text-sm">
                       {dept.description}
                     </p>
                   </div>

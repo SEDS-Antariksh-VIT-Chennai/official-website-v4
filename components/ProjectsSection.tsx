@@ -23,14 +23,14 @@ export default function ProjectsSection({
   const containerRef = useRef<HTMLDivElement>(null);
   
   return (
-    <section id="projects" className={`relative w-full ${noTopPadding ? 'pb-32' : 'py-32'} bg-background border-t border-white/5 overflow-hidden`}>
+    <section id="projects" className={`relative w-full ${noTopPadding ? 'pb-20' : 'py-20'} bg-background border-t border-white/5 overflow-hidden`}>
       <div className="container mx-auto px-6 md:px-12 mb-16 flex flex-col items-center text-center">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="text-sm uppercase tracking-[0.3em] text-white/50 mb-4"
+          className="text-sm font-mono uppercase tracking-[0.3em] text-white/50 mb-4"
         >
           Engineering & Research
         </motion.h2>
@@ -81,18 +81,18 @@ export default function ProjectsSection({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20 group-hover:from-black/60 transition-colors duration-500" />
                 
-                <div className="absolute top-4 left-4 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 uppercase tracking-[0.2em]">
+                <div className="absolute top-4 left-4 tech-glass border border-white/20 text-white text-[10px] font-mono font-bold px-3 py-1 uppercase tracking-[0.2em]">
                   {project.status}
                 </div>
                 
                 <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
+                  <div className="w-8 h-8 tech-glass border border-white/20 flex items-center justify-center">
                     {(() => {
                       const Icon = iconMap[project.iconName] || Rocket;
                       return <Icon className="w-4 h-4 text-white" />;
                     })()}
                   </div>
-                  <span className="text-xs font-bold tracking-widest text-white uppercase shadow-sm">
+                  <span className="text-xs font-mono font-bold tracking-widest text-white uppercase shadow-sm">
                     {project.category}
                   </span>
                 </div>
@@ -110,7 +110,7 @@ export default function ProjectsSection({
                 
                 {/* Arrow indicator on hover */}
                 <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between opacity-50 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-xs font-bold uppercase tracking-widest text-white">View Project</span>
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-white">View Project</span>
                   <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-2 transition-transform duration-300" />
                 </div>
               </div>
@@ -129,7 +129,7 @@ export default function ProjectsSection({
           >
             <Link 
               href="/projects"
-              className="group relative z-10 flex items-center justify-center gap-3 bg-transparent border border-white/20 text-white px-8 py-4 font-bold uppercase tracking-widest hover:bg-white/5 transition-all duration-500 hover:border-white/40"
+              className="group relative tech-border inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/20 tech-glass text-white hover:bg-white/10 hover:border-white/50 transition-colors duration-500 font-mono uppercase tracking-widest text-sm font-bold w-fit"
             >
               View All Projects <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>

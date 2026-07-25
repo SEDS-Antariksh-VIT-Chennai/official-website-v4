@@ -55,7 +55,7 @@ export default function NavWheel() {
       for (let i = sections.length - 1; i >= 0; i--) {
         if (sections[i].path === "/") {
           const section = document.getElementById(sections[i].id);
-          if (section && section.offsetTop <= scrollPosition) {
+          if (section && (section.getBoundingClientRect().top + window.scrollY) <= scrollPosition) {
             setActiveIndex(i);
             break;
           }
@@ -101,7 +101,7 @@ export default function NavWheel() {
     const targetSection = document.getElementById(targetSectionDef.id);
     if (targetSection) {
       window.scrollTo({
-        top: targetSection.offsetTop,
+        top: targetSection.getBoundingClientRect().top + window.scrollY,
         behavior: "smooth"
       });
       setTimeout(() => setIsScrolling(false), 1000);
@@ -117,10 +117,10 @@ export default function NavWheel() {
       onMouseLeave={() => setIsHovered(false)}
       className={`fixed mix-blend-difference right-0 top-1/2 -translate-y-1/2 h-[800px] w-[300px] z-[200] pointer-events-auto transition-all duration-700 ease-in-out origin-right [mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] [-webkit-mask-image:radial-gradient(ellipse_at_right_center,black_30%,transparent_80%)] ${
         isVisible || isHovered ? 'translate-x-0 opacity-100' : 'translate-x-[200px] opacity-0'
-      } hover:scale-110`}
+      } font-mono tracking-widest hidden md:block`}
     >
       <OptionWheel
-        items={sections.map(s => s.label)}
+        items={sections.map(s => s.label.toUpperCase())}
         defaultSelected={activeIndex}
         onChange={handleChange}
         side="right"

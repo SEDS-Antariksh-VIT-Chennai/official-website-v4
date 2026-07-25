@@ -9,7 +9,7 @@ export default function JoinUsSection({ config }: { config?: any }) {
   const requireResume = config ? config.requireResume : true;
   const requirePortfolio = config ? config.requirePortfolio : false;
   return (
-    <section id="join" className="relative w-full py-32 bg-background border-t border-white/5 overflow-hidden">
+    <section id="join" className="relative w-full py-20 bg-background border-t border-white/5 overflow-hidden">
       {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
@@ -23,7 +23,7 @@ export default function JoinUsSection({ config }: { config?: any }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
-              className="text-sm uppercase tracking-[0.3em] text-white/50 mb-4"
+              className="text-sm font-mono uppercase tracking-[0.3em] text-white/50 mb-4"
             >
               Recruitment
             </motion.h2>
@@ -51,13 +51,13 @@ export default function JoinUsSection({ config }: { config?: any }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex items-center gap-6"
+              className="flex items-center gap-6 font-mono"
             >
               <div className="flex flex-col">
                 <span className="text-3xl font-bold text-white mb-1">2027</span>
                 <span className="text-xs uppercase tracking-widest text-white/40">Next Cohort</span>
               </div>
-              <div className="w-px h-12 bg-white/10" />
+              <div className="w-px h-12 bg-white/20" />
               <div className="flex flex-col">
                 <span className="text-3xl font-bold text-white mb-1">4</span>
                 <span className="text-xs uppercase tracking-widest text-white/40">Open Divisions</span>
@@ -73,8 +73,8 @@ export default function JoinUsSection({ config }: { config?: any }) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="w-full md:w-7/12"
           >
-            <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 p-8 md:p-12">
-              <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+            <div className="tech-glass border border-white/20 p-8 md:p-12">
+              <form className="flex flex-col gap-6 font-mono" onSubmit={(e) => e.preventDefault()}>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
@@ -172,11 +172,12 @@ export default function JoinUsSection({ config }: { config?: any }) {
                 ))}
 
                 {!isOpen ? (
-                  <div className="mt-4 bg-red-500/10 border border-red-500/20 text-red-400 p-6 text-center rounded">
+                  <div className="mt-4 bg-red-500/10 border border-red-500/20 text-red-400 p-6 text-center rounded-none font-mono text-sm uppercase tracking-widest">
                     Recruitment is currently closed. Check back later!
                   </div>
                 ) : (
-                  <button type="submit" className="group mt-4 flex items-center justify-center gap-3 w-full bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]">
+                  <button type="submit" className="group mt-4 flex tech-border items-center justify-center gap-3 w-full bg-white text-black px-8 py-5 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors duration-500 text-sm">
+                    <span className="absolute inset-0 border border-black/20 m-1 pointer-events-none" />
                     Submit Application <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 )}

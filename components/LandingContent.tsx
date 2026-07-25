@@ -34,10 +34,10 @@ export default function LandingContent() {
     >
       <motion.div
         variants={itemVariants}
-        className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md"
+        className="inline-flex items-center gap-3 px-5 py-2 border border-white/20 mb-8 tech-glass tech-border"
       >
-        <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-        <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/80">Exploring Beyond Boundaries</span>
+        <span className="w-2 h-2 bg-white animate-pulse" />
+        <span className="text-xs font-mono font-bold tracking-[0.2em] uppercase text-white">Exploring Beyond Boundaries</span>
       </motion.div>
 
       <motion.h1
@@ -55,20 +55,21 @@ export default function LandingContent() {
         Join us as we build experimental rovers, launch sounding rockets, and reach for the stars.
       </motion.p>
 
-      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap justify-center gap-6">
+      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row flex-wrap justify-center gap-6 font-mono">
         <Link
           href="/join"
-          className="group relative inline-flex items-center justify-center gap-3 bg-white text-black px-10 py-5 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-gray-200 transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]"
+          className="group relative inline-flex items-center justify-center gap-3 bg-white text-black px-10 py-5 font-bold uppercase tracking-widest text-sm transition-colors hover:bg-gray-200"
         >
+          <span className="absolute inset-0 border border-black/20 m-1 pointer-events-none" />
           Join The Mission
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
         <Link
           href="/events"
-          className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl text-white hover:bg-white/10 hover:border-white/30 transition-all duration-500 hover:scale-105 uppercase tracking-widest text-sm font-bold"
+          className="group tech-border relative inline-flex items-center justify-center gap-3 px-10 py-5 border border-white/20 bg-black/40 backdrop-blur-md text-white hover:bg-white/10 hover:border-white/50 transition-colors uppercase tracking-widest text-sm font-bold"
         >
           Explore Events
-          <Globe className="w-4 h-4 text-white/40 group-hover:text-white transition-colors" />
+          <Globe className="w-4 h-4 text-white transition-colors" />
         </Link>
       </motion.div>
     </motion.div>
