@@ -77,7 +77,7 @@ export default function DepartmentsSection() {
               >
                 {/* Background Image */}
                 <div 
-                  className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-40 transition-opacity duration-700 ease-[0.16,1,0.3,1] z-0 scale-105 group-hover:scale-100"
+                  className="absolute inset-0 bg-cover bg-center opacity-40 group-hover:opacity-10 transition-all duration-700 ease-[0.16,1,0.3,1] z-0 scale-100 group-hover:scale-105"
                   style={{ backgroundImage: `url(${dept.image})` }}
                 />
                 

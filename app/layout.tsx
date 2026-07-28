@@ -3,6 +3,7 @@ import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import NavigationLoader from "@/components/NavigationLoader";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -16,13 +17,13 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "SEDS Antariksh | Exploring Beyond Boundaries",
+    default: "SEDS Antariksh | Connecting Youth and Space",
     template: "%s | SEDS Antariksh"
   },
-  description: "Official website for SEDS Antariksh - Students for the Exploration and Development of Space.",
+  description: "Official website for SEDS Antariksh - Connecting Youth and Space.",
   openGraph: {
     title: "SEDS Antariksh",
-    description: "Exploring Beyond Boundaries.",
+    description: "Connecting Youth and Space.",
     url: "https://sedsantariksh.com",
     siteName: "SEDS Antariksh",
     locale: "en_US",
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "SEDS Antariksh",
-    description: "Exploring Beyond Boundaries.",
+    description: "Connecting Youth and Space.",
   },
 };
 
@@ -44,6 +45,7 @@ export default function RootLayout({
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} dark`} suppressHydrationWarning>
       <Analytics />
       <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-white selection:text-black" suppressHydrationWarning>
+        <NavigationLoader />
         <Navbar />
         <main className="flex-1">
           {children}

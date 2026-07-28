@@ -1,15 +1,40 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { Instagram, Linkedin, Youtube, BookOpen } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 const stats = [
-  { label: "Active Members", value: "150+" },
-  { label: "Space Projects", value: "12" },
-  { label: "Workshops", value: "24+" },
+  { label: "Active Members", value: "200+" },
+  { label: "Events", value: "60+" },
   { label: "Years Active", value: "5" },
 ];
+
+function AnimatedCounter({ value }: { value: string }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  
+  const numMatch = value.match(/\d+/);
+  const numericValue = numMatch ? parseInt(numMatch[0], 10) : 0;
+  const suffix = value.replace(/\d+/g, '');
+
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, Math.round);
+
+  useEffect(() => {
+    if (isInView) {
+      animate(count, numericValue, { duration: 2.5, ease: [0.16, 1, 0.3, 1] });
+    }
+  }, [isInView, numericValue, count]);
+
+  return (
+    <span ref={ref}>
+      <motion.span>{rounded}</motion.span>
+      {suffix}
+    </span>
+  );
+}
 
 export default function AboutSection() {
   return (
@@ -51,7 +76,7 @@ export default function AboutSection() {
               SEDS Antariksh is a premier student organization dedicated to fostering passion and innovation in space technology. From designing sounding rockets and lunar rovers to hosting astronomical observation nights, we are cultivating the next generation of space pioneers.
             </motion.p>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-b border-white/10 py-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 border-t border-b border-white/10 py-8">
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -61,7 +86,9 @@ export default function AboutSection() {
                   transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
                   className="flex flex-col group cursor-default font-mono"
                 >
-                  <span className="text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-white/90 group-hover:scale-105 transition-all duration-500 origin-left">{stat.value}</span>
+                  <span className="text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-white/90 group-hover:scale-105 transition-all duration-500 origin-left">
+                    <AnimatedCounter value={stat.value} />
+                  </span>
                   <span className="text-xs uppercase tracking-widest text-white/50 group-hover:text-white/70 transition-colors duration-500">{stat.label}</span>
                 </motion.div>
               ))}
@@ -72,15 +99,20 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              className="mt-16"
+              className="mt-16 flex flex-wrap gap-4"
             >
-              <Link 
-                href="#team" 
-                className="group relative tech-border inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/20 tech-glass text-white hover:bg-white/10 hover:border-white/50 transition-colors duration-500 font-mono uppercase tracking-widest text-sm font-bold w-fit"
-              >
-                Meet the Team 
-                <ArrowUpRight className="w-4 h-4 text-white transition-colors duration-500" />
-              </Link>
+              <a href="https://www.instagram.com/seds_antariksh/" target="_blank" rel="noopener noreferrer" className="group flex tech-border items-center justify-center gap-2 px-6 py-3 border border-white/20 tech-glass text-white hover:bg-white/10 hover:border-white/50 transition-colors font-mono uppercase tracking-widest text-xs font-bold">
+                <Instagram className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" /> Instagram
+              </a>
+              <a href="https://www.linkedin.com/company/seds-antariksh-vitc/" target="_blank" rel="noopener noreferrer" className="group flex tech-border items-center justify-center gap-2 px-6 py-3 border border-white/20 tech-glass text-white hover:bg-white/10 hover:border-white/50 transition-colors font-mono uppercase tracking-widest text-xs font-bold">
+                <Linkedin className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" /> LinkedIn
+              </a>
+              <a href="https://www.youtube.com/@seds_antariksh" target="_blank" rel="noopener noreferrer" className="group flex tech-border items-center justify-center gap-2 px-6 py-3 border border-white/20 tech-glass text-white hover:bg-white/10 hover:border-white/50 transition-colors font-mono uppercase tracking-widest text-xs font-bold">
+                <Youtube className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" /> YouTube
+              </a>
+              <a href="https://medium.com/@sedsantariksh" target="_blank" rel="noopener noreferrer" className="group flex tech-border items-center justify-center gap-2 px-6 py-3 border border-white/20 tech-glass text-white hover:bg-white/10 hover:border-white/50 transition-colors font-mono uppercase tracking-widest text-xs font-bold">
+                <BookOpen className="w-4 h-4 text-white/50 group-hover:text-white transition-colors" /> Medium
+              </a>
             </motion.div>
           </div>
         </div>

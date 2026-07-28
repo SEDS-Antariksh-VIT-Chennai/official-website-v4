@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { clsx, type ClassValue } from "clsx";
@@ -37,25 +38,34 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-[150] transition-all duration-300 border-b",
+        "fixed top-0 left-0 right-0 z-[150] transition-all duration-300",
         isScrolled
-          ? "border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] py-4"
-          : "border-transparent py-6",
+          ? "shadow-[0_4px_30px_rgba(0,0,0,0.1)] py-4"
+          : "py-6",
         pathname.startsWith("/admin") ? "bg-black" : ""
       )}
     >
       {!pathname.startsWith("/admin") && (
-        <div className="absolute inset-0 z-[-1] pointer-events-none">
-          <GradualBlur preset="header" />
-        </div>
+        <>
+          <div className="hidden md:block absolute top-0 left-0 right-0 h-[8rem] z-[-1] pointer-events-none bg-gradient-to-b from-background/90 via-background/40 to-transparent">
+            <GradualBlur preset="header" height="8rem" />
+          </div>
+          <div className={cn(
+            "md:hidden absolute inset-0 z-[-1] pointer-events-none transition-colors duration-300",
+            isMobileMenuOpen ? "bg-black/95 backdrop-blur-xl" : "backdrop-blur-xl bg-background/60 border-b border-white/5"
+          )} />
+        </>
       )}
 
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold tracking-tighter uppercase z-50 text-white flex items-center gap-1 group">
-          <span className="group-hover:text-white/80 transition-colors">SEDS</span>
-          <span className="text-white/50 group-hover:text-white/80 transition-colors">ANTARIKSH</span>
+        <Link href="/" className="text-xl font-bold tracking-tighter uppercase z-50 text-white flex items-center gap-3 group">
+          <Image src="/seds.png" alt="SEDS Logo" width={48} height={48} className="object-contain" />
+          <div className="flex items-center gap-1">
+            <span className="group-hover:text-white/80 transition-colors">SEDS</span>
+            <span className="text-white/50 group-hover:text-white/80 transition-colors">ANTARIKSH</span>
+          </div>
         </Link>
-        
+
         <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
@@ -75,9 +85,9 @@ export default function Navbar() {
               </Link>
             );
           })}
-          
+
           <div className="w-px h-4 bg-white/20 mx-2" />
-          
+
           <Link
             href="/admin"
             className={cn(
@@ -95,7 +105,7 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className="md:hidden text-white/70 hover:text-white transition-colors"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
@@ -106,7 +116,7 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -127,6 +137,7 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
+                      prefetch={true}
                       className={cn(
                         "text-2xl font-mono font-bold uppercase tracking-widest transition-colors duration-300 relative",
                         isActive ? "text-white" : "text-white/50 hover:text-white"
@@ -139,9 +150,9 @@ export default function Navbar() {
                   </motion.div>
                 );
               })}
-              
+
               <div className="w-full h-px bg-white/10 my-4" />
-              
+
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -151,6 +162,7 @@ export default function Navbar() {
                 <Link
                   href="/admin"
                   onClick={() => setIsMobileMenuOpen(false)}
+                  prefetch={true}
                   className={cn(
                     "text-lg font-mono font-bold uppercase tracking-widest transition-colors duration-300 flex items-center gap-2",
                     pathname === "/admin" ? "text-white" : "text-white/30 hover:text-white/80"

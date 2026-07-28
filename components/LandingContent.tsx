@@ -32,20 +32,24 @@ export default function LandingContent() {
       animate="visible"
       className="max-w-4xl text-center flex flex-col items-center relative z-10"
     >
-      <motion.div
-        variants={itemVariants}
-        className="inline-flex items-center gap-3 px-5 py-2 border border-white/20 mb-8 tech-glass tech-border"
-      >
-        <span className="w-2 h-2 bg-white animate-pulse" />
-        <span className="text-xs font-mono font-bold tracking-[0.2em] uppercase text-white">Exploring Beyond Boundaries</span>
-      </motion.div>
-
       <motion.h1
         variants={itemVariants}
-        className="text-6xl md:text-8xl lg:text-[8rem] font-extrabold tracking-tighter mb-8 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 leading-none"
+        className="text-6xl md:text-8xl lg:text-[8rem] font-extrabold tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 leading-none"
       >
         SEDS ANTARIKSH
       </motion.h1>
+
+      <motion.h2
+        variants={itemVariants}
+        className="text-lg md:text-2xl lg:text-3xl font-mono font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-white via-white/40 to-white uppercase mb-8 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] bg-[length:200%_auto] animate-[textShine_4s_linear_infinite]"
+      >
+        <style>{`
+          @keyframes textShine {
+            to { background-position: 200% center; }
+          }
+        `}</style>
+        Connecting Youth and Space
+      </motion.h2>
 
       <motion.p
         variants={itemVariants}

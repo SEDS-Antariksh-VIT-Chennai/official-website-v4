@@ -11,6 +11,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
   const [upcomingIndex, setUpcomingIndex] = useState(0);
   const [isHoveringUpcoming, setIsHoveringUpcoming] = useState(false);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const [scrollDirection, setScrollDirection] = useState(1);
   
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -32,6 +33,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
     if (isHoveringUpcoming || !isAutoScrolling) return;
 
     const interval = setInterval(() => {
+      setScrollDirection(1);
       setUpcomingIndex(prev => (prev + 1) % upcomingEventsList.length);
     }, 5000);
 
@@ -43,8 +45,10 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
       setIsAutoScrolling(false);
       if (upcomingEventsList.length <= 1) return;
       if (direction === 'left') {
+        setScrollDirection(-1);
         setUpcomingIndex(prev => prev === 0 ? upcomingEventsList.length - 1 : prev - 1);
       } else {
+        setScrollDirection(1);
         setUpcomingIndex(prev => (prev + 1) % upcomingEventsList.length);
       }
     } else {
@@ -57,6 +61,21 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
   };
 
   const upcomingEvent = upcomingEventsList.length > 0 ? upcomingEventsList[upcomingIndex] : null;
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 30 : -30,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -30 : 30,
+      opacity: 0,
+    })
+  };
 
   // Grid view (for /events page)
   if (!showTabs) {
@@ -117,9 +136,11 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                           <Calendar className="w-16 h-16 text-white/20" />
                         )}
                         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
-                        <div className={`absolute top-4 left-4 border border-white/20 text-[10px] font-mono font-bold px-3 py-1 uppercase tracking-[0.2em] ${status === 'Completed' ? 'tech-glass text-white' : 'bg-white text-black'}`}>
-                          {status}
-                        </div>
+                        {status !== 'Upcoming' && (
+                          <div className={`absolute top-4 left-4 border border-white/20 text-[10px] font-mono font-bold px-3 py-1 uppercase tracking-[0.2em] ${status === 'Completed' ? 'tech-glass text-white' : 'bg-white text-black'}`}>
+                            {status}
+                          </div>
+                        )}
                       </div>
 
                       <div className="relative z-10 p-6 md:p-8 flex flex-col flex-1">
@@ -181,7 +202,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
             Missions & Gatherings
           </motion.h2>
           
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2 p-1 border border-white/20 tech-glass">
               <div className="relative flex items-center">
                 <button
@@ -217,12 +238,14 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
             </div>
 
             {showViewAll && (
-              <Link 
-                href="/events"
-                className="group relative flex tech-border items-center justify-center gap-2 border border-white/20 tech-glass hover:bg-white/10 hover:border-white/50 text-white px-6 md:px-8 py-3 md:py-4 text-xs font-mono font-bold uppercase tracking-widest transition-colors duration-300 rounded-none"
-              >
-                View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="flex p-1 border border-white/20 tech-glass">
+                <Link 
+                  href="/events"
+                  className="group relative flex tech-border items-center justify-center gap-2 hover:bg-white/10 text-white px-6 md:px-8 py-3 md:py-4 text-xs md:text-sm font-mono font-bold uppercase tracking-widest transition-colors duration-300 rounded-none w-full"
+                >
+                  View All <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             )}
           </div>
         </div>
@@ -232,7 +255,7 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
         <AnimatePresence mode="wait">
           {activeTab === "upcoming" && (
             <motion.div 
-              key={`upcoming-${upcomingEvent?.id}`}
+              key="upcoming"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -245,96 +268,117 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                 <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
                   {/* Poster Image */}
                   <div className="w-full lg:w-1/3 relative group">
-                    <Link href={`/events/${upcomingEvent.id}`} className="block relative h-full">
-                      <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-xl border border-white/10 z-0" />
-                      <div className="relative aspect-[1/1.414] md:aspect-[1/1.414] overflow-hidden z-10 border border-white/10 flex items-center justify-center bg-white/5">
-                        {upcomingEvent.coverImage ? (
-                          <div 
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
-                            style={{ backgroundImage: `url(${upcomingEvent.coverImage})` }}
-                          />
-                        ) : (
-                          <Calendar className="w-16 h-16 text-white/20" />
-                        )}
-                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      </div>
-                    </Link>
+                    <AnimatePresence mode="wait" custom={scrollDirection}>
+                      <motion.div
+                        key={`image-${upcomingEvent.id}`}
+                        custom={scrollDirection}
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ duration: 0.3 }}
+                        className="relative h-full"
+                      >
+                        <Link href={`/events/${upcomingEvent.id}`} className="block relative h-full">
+                          <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-xl border border-white/10 z-0" />
+                          <div className="relative aspect-[1/1.414] md:aspect-[1/1.414] overflow-hidden z-10 border border-white/10 flex items-center justify-center bg-white/5">
+                            {upcomingEvent.coverImage ? (
+                              <div 
+                                className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
+                                style={{ backgroundImage: `url(${upcomingEvent.coverImage})` }}
+                              />
+                            ) : (
+                              <Calendar className="w-16 h-16 text-white/20" />
+                            )}
+                            <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          </div>
+                        </Link>
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
 
                   {/* Details */}
                   <div className="w-full lg:w-2/3 flex flex-col">
-                    <div className="flex items-center gap-3 mb-8 self-start">
-                      <div className="inline-block bg-white text-black text-[10px] font-mono font-bold px-4 py-2 uppercase tracking-widest">
-                        Upcoming
-                      </div>
-                      {upcomingEventsList.length > 1 && (
-                        <div className="flex items-center gap-3">
-                          <div className="tech-glass text-white text-[10px] font-mono font-bold px-3 py-1 border border-white/20 uppercase tracking-[0.2em]">
-                            {upcomingIndex + 1} / {upcomingEventsList.length}
-                          </div>
-                          <div className="flex items-center gap-2 ml-2">
-                            <button 
-                              onClick={(e) => { e.preventDefault(); handleScrollClick('left'); }}
-                              className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20"
-                            >
-                              <ChevronLeft className="w-4 h-4" />
-                            </button>
-                            <button 
-                              onClick={(e) => { e.preventDefault(); handleScrollClick('right'); }}
-                              className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20"
-                            >
-                              <ChevronRight className="w-4 h-4" />
-                            </button>
-                          </div>
+                    {upcomingEventsList.length > 1 && (
+                      <div className="flex items-center gap-3 mb-8 self-start">
+                        <div className="tech-glass text-white text-xs md:text-sm font-mono font-bold px-4 h-9 md:h-10 border border-white/20 uppercase tracking-[0.2em] flex items-center justify-center">
+                          {upcomingIndex + 1} / {upcomingEventsList.length}
                         </div>
-                      )}
-                    </div>
-                    
-                    <h3 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-                      {upcomingEvent.title}
-                    </h3>
-                    
-                    <div className="flex flex-col gap-6 mb-10">
-                      <div className="flex items-center gap-4 text-white/70">
-                        <div className="w-12 h-12 flex items-center justify-center border border-white/10 bg-white/5">
-                          <Calendar className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <p className="text-xs uppercase tracking-widest text-white/40 mb-1">Date</p>
-                          <p className="text-lg font-medium">{new Date(upcomingEvent.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 text-white/70">
-                        <div className="w-12 h-12 flex items-center justify-center border border-white/10 bg-white/5">
-                          <MapPin className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <p className="text-xs uppercase tracking-widest text-white/40 mb-1">Location</p>
-                          <p className="text-lg font-medium">{upcomingEvent.location}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <p className="text-white/60 text-lg leading-relaxed mb-12 max-w-xl line-clamp-4">
-                      {upcomingEvent.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-4">
-                      {upcomingEvent.buttons && Array.isArray(upcomingEvent.buttons) && upcomingEvent.buttons.length > 0 && (
-                        (upcomingEvent.buttons as any[]).map((btn, i) => (
-                          <a 
-                            key={i}
-                            href={btn.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex tech-border items-center justify-center gap-3 w-full sm:w-auto bg-transparent border border-white/20 text-white px-8 py-4 font-mono font-bold uppercase tracking-widest hover:bg-white/10 hover:border-white/50 transition-colors"
+                        <div className="flex items-center gap-2 ml-2">
+                          <button 
+                            onClick={(e) => { e.preventDefault(); handleScrollClick('left'); }}
+                            className="w-9 h-9 md:w-10 md:h-10 rounded-none border border-white/20 tech-border tech-glass flex items-center justify-center text-white hover:bg-white/20 hover:border-white/50 transition-colors z-20"
                           >
-                            {btn.label} <ArrowRight className="w-5 h-5" />
-                          </a>
-                        ))
-                      )}
-                    </div>
+                            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+                          </button>
+                          <button 
+                            onClick={(e) => { e.preventDefault(); handleScrollClick('right'); }}
+                            className="w-9 h-9 md:w-10 md:h-10 rounded-none border border-white/20 tech-border tech-glass flex items-center justify-center text-white hover:bg-white/20 hover:border-white/50 transition-colors z-20"
+                          >
+                            <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <AnimatePresence mode="wait" custom={scrollDirection}>
+                      <motion.div
+                        key={`content-${upcomingEvent.id}`}
+                        custom={scrollDirection}
+                        variants={slideVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ duration: 0.3 }}
+                        className="flex flex-col"
+                      >
+                        <h3 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
+                          {upcomingEvent.title}
+                        </h3>
+                        
+                        <div className="flex flex-col gap-6 mb-10">
+                          <div className="flex items-center gap-4 text-white/70">
+                            <div className="w-12 h-12 flex items-center justify-center border border-white/10 bg-white/5">
+                              <Calendar className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-widest text-white/40 mb-1">Date</p>
+                              <p className="text-lg font-medium">{new Date(upcomingEvent.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-4 text-white/70">
+                            <div className="w-12 h-12 flex items-center justify-center border border-white/10 bg-white/5">
+                              <MapPin className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-widest text-white/40 mb-1">Location</p>
+                              <p className="text-lg font-medium">{upcomingEvent.location}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p className="text-white/60 text-lg leading-relaxed mb-12 max-w-xl line-clamp-4">
+                          {upcomingEvent.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-4">
+                          {upcomingEvent.buttons && Array.isArray(upcomingEvent.buttons) && upcomingEvent.buttons.length > 0 && (
+                            (upcomingEvent.buttons as any[]).map((btn, i) => (
+                              <a 
+                                key={i}
+                                href={btn.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex tech-border items-center justify-center gap-3 w-full sm:w-auto bg-transparent border border-white/20 text-white px-8 py-4 font-mono font-bold uppercase tracking-widest hover:bg-white/10 hover:border-white/50 transition-colors"
+                              >
+                                {btn.label} <ArrowRight className="w-5 h-5" />
+                              </a>
+                            ))
+                          )}
+                        </div>
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
               ) : (
@@ -362,13 +406,13 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
                 <>
                   <button 
                     onClick={() => handleScrollClick('left')}
-                    className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20 opacity-0 group-hover:opacity-100"
+                    className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-none tech-border border border-white/20 tech-glass flex items-center justify-center text-white hover:bg-white/20 hover:border-white/50 transition-colors z-20 opacity-0 group-hover:opacity-100"
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
                   <button 
                     onClick={() => handleScrollClick('right')}
-                    className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/20 bg-black/50 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors z-20 opacity-0 group-hover:opacity-100"
+                    className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-none tech-border border border-white/20 tech-glass flex items-center justify-center text-white hover:bg-white/20 hover:border-white/50 transition-colors z-20 opacity-0 group-hover:opacity-100"
                   >
                     <ChevronRight className="w-6 h-6" />
                   </button>
