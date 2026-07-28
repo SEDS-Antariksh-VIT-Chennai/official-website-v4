@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import NavigationLoader from "@/components/NavigationLoader";
+import { Suspense } from "react";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -45,7 +46,9 @@ export default function RootLayout({
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} dark`} suppressHydrationWarning>
       <Analytics />
       <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-white selection:text-black" suppressHydrationWarning>
-        <NavigationLoader />
+        <Suspense fallback={null}>
+          <NavigationLoader />
+        </Suspense>
         <Navbar />
         <main className="flex-1">
           {children}
