@@ -23,7 +23,7 @@ export default async function EventsPage() {
         </Link>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-none tech-glass overflow-hidden font-mono">
+      <div className="bg-white/5 border border-white/10 rounded-none tech-glass overflow-x-auto font-mono">
         <table className="w-full text-left">
           <thead className="bg-white/5 text-[10px] uppercase tracking-widest text-white/50">
             <tr>

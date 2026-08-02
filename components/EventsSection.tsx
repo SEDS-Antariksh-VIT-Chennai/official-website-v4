@@ -7,11 +7,6 @@ import Link from "next/link";
 
 export default function EventsSection({ events = [], showViewAll = false, noTopPadding = false, showTabs = false }: { events?: any[], showViewAll?: boolean, noTopPadding?: boolean, showTabs?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
-  const [upcomingIndex, setUpcomingIndex] = useState(0);
-  const [isHoveringUpcoming, setIsHoveringUpcoming] = useState(false);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-  const [scrollDirection, setScrollDirection] = useState(1);
   
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -27,6 +22,12 @@ export default function EventsSection({ events = [], showViewAll = false, noTopP
     d.setHours(0,0,0,0);
     return d.getTime() >= today.getTime();
   });
+
+  const [activeTab, setActiveTab] = useState<"upcoming" | "past">(upcomingEventsList.length === 0 ? "past" : "upcoming");
+  const [upcomingIndex, setUpcomingIndex] = useState(0);
+  const [isHoveringUpcoming, setIsHoveringUpcoming] = useState(false);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const [scrollDirection, setScrollDirection] = useState(1);
   
   useEffect(() => {
     if (activeTab !== "upcoming" || upcomingEventsList.length <= 1) return;
