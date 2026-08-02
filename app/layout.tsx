@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     template: "%s | SEDS Antariksh"
   },
   description: "Official website for SEDS Antariksh - Connecting Youth and Space.",
+  icons: {
+    icon: "/seds.png",
+  },
   openGraph: {
     title: "SEDS Antariksh",
     description: "Connecting Youth and Space.",

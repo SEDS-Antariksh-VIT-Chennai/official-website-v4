@@ -5,6 +5,8 @@ import prisma from "@/lib/prisma";
 import MasonryGallery from "@/components/MasonryGallery";
 import { getFormConfig } from "@/src/actions/admin";
 
+export const dynamic = 'force-dynamic';
+
 const iconMap: Record<string, any> = {
   Rocket,
   Wrench,

@@ -1,6 +1,8 @@
 import EventsPageContent from "./EventsPageContent";
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 export default async function EventsPage() {
   const events = await prisma.event.findMany({
     orderBy: { date: 'desc' }

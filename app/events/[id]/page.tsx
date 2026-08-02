@@ -4,6 +4,8 @@ import { Calendar, MapPin, ArrowRight, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import MasonryGallery from "@/components/MasonryGallery";
 
+export const dynamic = 'force-dynamic';
+
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const event = await getEventById(id);
